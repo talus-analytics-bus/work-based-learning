@@ -1,0 +1,20 @@
+.sector-select-container {
+  margin-bottom: 30px;
+  padding: 10px 0px 30px;
+  border-bottom: 1px solid #ccc;
+  text-align: left;  
+}
+
+.sector-name-text {
+  text-align: left;
+  font-size: 1.4em;
+}
+
+.sector-distribution-chart {
+  margin-top: 40px;
+}
+.legend {
+  display: inline-block;
+  margin-top: 30px;
+}
+.legend text { text-anchor: start; }

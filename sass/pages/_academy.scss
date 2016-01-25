@@ -1,0 +1,32 @@
+.academy-select-container {
+  margin-bottom: 30px;
+  padding: 10px 0px 30px;
+  border-bottom: 1px solid #ccc;
+  text-align: left;  
+}
+
+.academy-name-text {
+  text-align: left;
+  font-size: 1.4em;
+}
+.academy-data-container {
+  text-align: left;
+  margin-top: 30px;
+  font-size: 1.1em;
+  & > div:nth-child(n+2) {
+    margin-top: 3px;
+  }
+}
+.academy-data-label {
+  display: inline-block;
+  width: 110px;
+  font-weight: 600;
+}
+.academy-sector-text {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.academy-distribution-chart {
+  margin-top: 50px;
+}
