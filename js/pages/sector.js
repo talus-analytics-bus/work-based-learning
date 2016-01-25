@@ -56,9 +56,10 @@ var App = App || {};
 		var legend = d3.select('.legend')
 			.attr('width', 500);
 		
-		var academyColorScale = d3.scale.category20();
 		
 		var updateDistributionChart = function(sector) {
+			var academyColorScale = d3.scale.category20();
+
 			var sectorData = [];
 			for (var i = 0; i < App.spendingCategories.length; i++) {
 				var cat = App.spendingCategories[i];
@@ -154,6 +155,8 @@ var App = App || {};
 				.style('fill', function(d) { return academyColorScale(d); });
 			legendGroups.select('text')
 				.text(function(d) { return d; });
+				
+			legendGroups.exit().remove();
 		};
 		updateDistributionChart(name);
 	};

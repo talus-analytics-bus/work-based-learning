@@ -1,10 +1,9 @@
 var App = App || {};
 
 (function() {
-	var init = function(error, academies, events) {
-		App.academies = academies;
-		App.events = events;
-		
+	var LOCAL_VERSION = (typeof App.academies !== 'undefined');
+	
+	var init = function() {	
 		// assign ids
 		Util.assignId(App.academies);
 		Util.assignId(App.events);
@@ -14,8 +13,15 @@ var App = App || {};
 		Routing.initializeRoutes();
 	};
 	
-	queue()
-		.defer(d3.tsv, 'data/academies.tsv')
-		.defer(d3.tsv, 'data/events.tsv')
-		.await(init);
+	if (LOCAL_VERSION) {
+		init();
+	} else {
+		queue()
+			.defer(d3.tsv, 'data/academies.tsv')
+			.defer(d3.tsv, 'data/events.tsv')
+			.await(function(error, academies, events) {
+				App.academies = academies;
+				App.events = events;
+			});
+	}
 })();
