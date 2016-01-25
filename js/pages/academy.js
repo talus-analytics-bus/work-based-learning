@@ -8,6 +8,7 @@ var App = App || {};
 			var academy = App.academies.filter(function(d) { return d.id === +academyId; })[0];
 			updateData(academy);
 			updateDistributionChart(academy);
+			updateEventTable(academy);
 		});
 		academySelect.selectAll('option')
 			.data(App.academies)
@@ -33,7 +34,6 @@ var App = App || {};
 				});
 			$('.academy-county-text').text(a.County);
 		};
-		updateData(academy);
 		
 		
 		// build the chart
@@ -96,6 +96,44 @@ var App = App || {};
 				
 			barGroups.exit().remove();
 		};
+		
+		
+		var updateEventTable = function(a) {
+			var events = App.events.filter(function(d) { return d['Academy Name'] + d['Academy School'] === a['Academy Name'] + a['High School']; });
+			if (events.length === 0) {
+				$('.event-list-container').hide();
+			} else {
+				$('.event-list-container').show();
+				
+				var employerHours = {};
+				for (var i = 0; i < events.length; i++) {
+					var emp = events[i].Employer;
+					if (typeof employerHours[emp] === 'undefined') employerHours[emp] = 0;
+					employerHours[emp] += Util.strToFloat(events[i].Total);
+				}
+				var employers = [];
+				for (var emp in employerHours) employers.push({employer: emp, value: employerHours[emp]});				
+				employers.sort(function(a, b) {
+					if (+a.value > +b.value) return -1;
+					else if (+a.value < +b.value) return 1;
+					else return 0;
+				});
+				
+				var eventRows = d3.select('.academy-event-list tbody').selectAll('tr')
+					.data(employers);
+				var newEventRows = eventRows.enter().append('tr');
+				for (var i = 0; i < 2; i++) newEventRows.append('td');
+				
+				eventRows.select('td:first-child').text(function(d) { return d.employer; });
+				eventRows.select('td:nth-child(2)').text(function(d) { return Util.comma(d.value); });
+				
+				eventRows.exit().remove();
+			}
+		};
+		
+
+		updateData(academy);
 		updateDistributionChart(academy);
+		updateEventTable(academy);
 	};
 })();

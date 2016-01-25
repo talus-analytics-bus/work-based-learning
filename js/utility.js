@@ -1,5 +1,6 @@
 var Util = {};
 
+Util.comma = d3.format(',');
 Util.monetize = d3.format('$,f');
 
 // assigns an ID attribute to each object in an array of objects
