@@ -1,24 +1,24 @@
 var App = App || {};
 
 (function() {
-	App.initSector = function(name) {
+	App.initDistrict = function(name) {
 		// fill sector select
-		var sectorSelect = d3.select('.sector-select').on('change', function() {
-			var sector = $(this).val();
-			updateData(sector);
-			updateDistributionChart(sector);
+		var districtSelect = d3.select('.district-select').on('change', function() {
+			var district = $(this).val();
+			updateData(district);
+			updateDistributionChart(district);
 		});
-		sectorSelect.selectAll('option')
-			.data(App.sectors)
+		districtSelect.selectAll('option')
+			.data(App.districts)
 			.enter().append('option')
 				.property('value', function(d) { return d; })
 				.text(function(d) { return d; });
-		sectorSelect.property('value', name);
+		districtSelect.property('value', name);
 		
 		
 		// update data text
-		var updateData = function(sector) {
-			$('.sector-name-text').html('<u>Sector</u>: ' + sector);
+		var updateData = function(district) {
+			$('.district-name-text').html('<u>District</u>: ' + district);
 		};
 		updateData(name);
 
@@ -26,7 +26,7 @@ var App = App || {};
 		var margin = {top: 20, right: 20, bottom: 40, left: 80};
 		var width = 960 - margin.left - margin.right;
 		var height = 400 - margin.top - margin.bottom;
-   		var chart = d3.select('.sector-distribution-chart')
+   		var chart = d3.select('.district-distribution-chart')
    			.attr('width', width + margin.left + margin.right)
    			.attr('height', height + margin.top + margin.bottom)
    			.append('g')
@@ -57,10 +57,10 @@ var App = App || {};
 			.attr('width', 500);
 		
 		
-		var updateDistributionChart = function(sector) {
+		var updateDistributionChart = function(district) {
 			var academyColorScale = d3.scale.category20();
 
-			var sectorData = [];
+			var districtData = [];
 			for (var i = 0; i < App.spendingCategories.length; i++) {
 				var cat = App.spendingCategories[i];
 				var data = {
@@ -70,7 +70,7 @@ var App = App || {};
 				};
 				
 				// loop through each academy and add value to sector data
-				App.academies.filter(function(d) { return d['Primary CTE Industry Sector'] === sector; })
+				App.academies.filter(function(d) { return d['School District'] === district; })
 					.forEach(function(d) {
 						var val = Util.strToFloat(d[cat]);
 						if (!isNaN(val)) {
@@ -84,16 +84,16 @@ var App = App || {};
 						}
 					});
 					
-				sectorData.push(data);
+				districtData.push(data);
 			}
 			
 			// fix y-axis scale
-			y.domain([0, d3.max(sectorData.map(function(d) { return d.sum; }))]);
+			y.domain([0, d3.max(districtData.map(function(d) { return d.sum; }))]);
 			yAxis.scale(y);
 			yAxisG.call(yAxis);
 
 			var barGroups = chart.selectAll('.bar-group')
-				.data(sectorData);
+				.data(districtData);
 			var newBarGroups = barGroups.enter().append('g')
 				.attr('class', 'bar-group');
 			newBarGroups.append('g')
@@ -163,4 +163,3 @@ var App = App || {};
 		updateDistributionChart(name);
 	};
 })();
-

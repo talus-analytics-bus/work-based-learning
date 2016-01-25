@@ -75,6 +75,20 @@
 		</div>
 	</script>	
 
+    <script id="district-template" type="text/x-handlebars-template">
+		<div class="container">
+			<div class="district-select-container">
+				<div class="select-label">Select a district:</div>
+				<select class="district-select form-control"></select>
+			</div>
+			<div class="district-name-text"></div>
+			<div class="chart-container">
+				<svg class="district-distribution-chart"></svg>
+				<svg class="legend"></svg>
+			</div>
+		</div>
+	</script>
+
     <script id="sector-template" type="text/x-handlebars-template">
 		<div class="container">
 			<div class="sector-select-container">
@@ -107,15 +121,16 @@
 	<script src="build/lib.min.js"></script>
 		
 	<!-- Data (for local version only) --->
-	<script src="data/data.js"></script>
+	<!--<script src="data/data.js"></script>-->
     
     <!-- Project Specific Files -->
-    <!--<script src="js/pages/academy.js"></script>
+    <script src="js/pages/academy.js"></script>
+    <script src="js/pages/district.js"></script>
     <script src="js/pages/sector.js"></script>
     <script src="js/utility.js"></script>
     <script src="js/routing.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/init.js"></script>-->
-    <script src="build/bundle.min.js"></script>
+    <script src="js/init.js"></script>
+    <!--<script src="build/bundle.min.js"></script>-->
 </body>
 </html>

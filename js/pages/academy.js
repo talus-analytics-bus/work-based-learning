@@ -14,6 +14,7 @@ var App = App || {};
 			.enter().append('option')
 				.property('value', function(d) { return d.id; })
 				.text(function(d) { return d['Academy Name'] + ' (' + d['High School'] + ')'; });
+		academySelect.property('value', id);
 		
 		
 		var academy = App.academies.filter(function(d) { return d.id === +id; })[0];
@@ -22,13 +23,15 @@ var App = App || {};
 		var updateData = function(a) {
 			$('.academy-name-text').text(a['Academy Name']);
 			$('.academy-high-school-text').text(a['High School']);
-			$('.academy-district-text').text(a['School District']);
-			$('.academy-sector-text').text(a['Primary CTE Industry Sector']);
+			$('.academy-district-text').text(a['School District'])
+				.click(function() {
+					hasher.setHash('district/' + a['School District']);
+				});
+			$('.academy-sector-text').text(a['Primary CTE Industry Sector'])
+				.click(function() {
+					hasher.setHash('sector/' + a['Primary CTE Industry Sector']);
+				});
 			$('.academy-county-text').text(a.County);
-			
-			$('.academy-sector-text').click(function() {
-				hasher.setHash('sector/' + a['Primary CTE Industry Sector']);
-			});
 		};
 		updateData(academy);
 		

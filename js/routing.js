@@ -27,6 +27,11 @@ var Routing = {};
         	App.initSector(name);
         	window.scrollTo(0, 0);
         });
+        crossroads.addRoute('/district/{name}', function(name) {
+        	loadTemplate('district');
+        	App.initDistrict(name);
+        	window.scrollTo(0, 0);
+        });
 
         // setup hasher for subscribing to hash changes and browser history
         hasher.prependHash = '';
