@@ -9,12 +9,20 @@
   text-align: left;
   font-size: 1.4em;
 }
+.district-data-container {
+  text-align: left;
+  margin-top: 30px;
+  font-size: 1.1em;
+  & > div:nth-child(n+2) {
+    margin-top: 3px;
+  }
+  .district-data-label {
+    display: inline-block;
+    width: 115px;
+    font-weight: 600;
+  }
+}
 
-.district-distribution-chart {
+.district-distribution-container {
   margin-top: 40px;
 }
-.legend {
-  display: inline-block;
-  margin-top: 30px;
-}
-.legend text { text-anchor: start; }

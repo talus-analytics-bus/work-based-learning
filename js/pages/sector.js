@@ -2,6 +2,8 @@ var App = App || {};
 
 (function() {
 	App.initSector = function(name) {
+		if (typeof name === 'undefined') var name = App.districts[0]['Primary CTE Industry Sector'];
+
 		// fill sector select
 		var sectorSelect = d3.select('.sector-select').on('change', function() {
 			var sector = $(this).val();
@@ -18,7 +20,7 @@ var App = App || {};
 		
 		// update data text
 		var updateData = function(sector) {
-			$('.sector-name-text').html('<u>Sector</u>: ' + sector);
+			$('.sector-name-text').html(sector);
 		};
 		updateData(name);
 
@@ -35,7 +37,7 @@ var App = App || {};
 
 		var x = d3.scale.ordinal()
 			.domain(App.spendingCategories)
-			.rangeRoundBands([0, width], 0.1);
+			.rangeRoundBands([0, width], 0.3);
 		var xAxis = d3.svg.axis().scale(x)
 			.orient('bottom');
 		var xAxisG = chart.append('g')
@@ -58,7 +60,7 @@ var App = App || {};
 		
 		
 		var updateDistributionChart = function(sector) {
-			var academyColorScale = d3.scale.category20();
+			var academyColorScale = d3.scale.category20c();
 
 			var sectorData = [];
 			for (var i = 0; i < App.spendingCategories.length; i++) {

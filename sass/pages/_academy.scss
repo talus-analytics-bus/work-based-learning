@@ -24,19 +24,23 @@
 }
 .academy-sector-text,
 .academy-district-text {
-  text-decoration: underline;
+  color: #0645ad;
   cursor: pointer;
 }
-
-.academy-distribution-chart {
-  margin-top: 50px;
-}
+.academy-distribution-container { margin-top: 30px; }
 .event-list-container {
   display: none;
-  margin-top: 30px;
+  margin-top: 50px;
 }
 .academy-event-list.table {
-  td:nth-child(n+2) { padding-left: 25px; }
-  td:nth-child(-n+2) { text-align: left; }
-  td:nth-child(3) { text-align: right; }
+  margin-top: 15px;
+  td:nth-child(1) { text-align: left; }
+  td:nth-child(2) {
+    text-align: right;
+    padding-left: 25px;
+  }
+}
+.employer-bubble-chart {
+  margin-top: 15px;
+  border: 1px solid #ccc; 
 }

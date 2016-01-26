@@ -1,14 +1,20 @@
 var App = App || {};
 
 (function() {
-	App.spendingCategories = ['Cash', 'Equipment', 'Scholarship', 'Stipend', 'Other', 'Paid Internships', 'Emp. Hours', 'Total'];
+	App.spendingCategories = ['Total', 'Cash', 'Equipment', 'Scholarship', 'Stipend', 'Other', 'Paid Internships', 'Emp. Hours'];
 
 	App.initialize = function() {
 		$('.header-title').click(function() { hasher.setHash(''); });
 	};
 	
 	App.initHome = function() {
+		$('.big-button').click(function() {
+			var page = $(this).attr('page');
+			hasher.setHash(page);
+		});
+	};
 		
+	App.initList = function() {
 		var academyTable = d3.select('.academy-table');
 		var academyHeaderRow = academyTable.select('thead tr');
 		var academyTbody = academyTable.select('tbody');

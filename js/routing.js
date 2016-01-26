@@ -17,17 +17,22 @@ var Routing = {};
             App.initHome();
             window.scrollTo(0, 0);
         });
-        crossroads.addRoute('/academy/{id}', function(id) {
+        crossroads.addRoute('/list', function() {
+        	loadTemplate('list');
+        	App.initList();
+        	window.scrollTo(0, 0);
+        });
+        crossroads.addRoute('/academy/:{id}:', function(id) {
         	loadTemplate('academy');
         	App.initAcademy(id);
         	window.scrollTo(0, 0);
         });
-        crossroads.addRoute('/sector/{name}', function(name) {
+        crossroads.addRoute('/sector/:{name}:', function(name) {
         	loadTemplate('sector');
         	App.initSector(name);
         	window.scrollTo(0, 0);
         });
-        crossroads.addRoute('/district/{name}', function(name) {
+        crossroads.addRoute('/district/:{name}:', function(name) {
         	loadTemplate('district');
         	App.initDistrict(name);
         	window.scrollTo(0, 0);

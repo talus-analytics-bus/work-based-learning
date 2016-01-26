@@ -2,13 +2,13 @@ var App = App || {};
 
 (function() {
 	App.initAcademy = function(id) {
+		if (typeof id === 'undefined') var id = 0;
+		
 		// fill academy select
 		var academySelect = d3.select('.academy-select').on('change', function() {
 			var academyId = $(this).val();
 			var academy = App.academies.filter(function(d) { return d.id === +academyId; })[0];
-			updateData(academy);
-			updateDistributionChart(academy);
-			updateEventTable(academy);
+			updateAll(academy);
 		});
 		academySelect.selectAll('option')
 			.data(App.academies)
@@ -49,7 +49,7 @@ var App = App || {};
 
 		var x = d3.scale.ordinal()
 			.domain(App.spendingCategories)
-			.rangeRoundBands([0, width], 0.1);
+			.rangeRoundBands([0, width], 0.3);
 		var xAxis = d3.svg.axis().scale(x)
 			.orient('bottom');
 		var xAxisG = chart.append('g')
@@ -99,25 +99,11 @@ var App = App || {};
 		
 		
 		var updateEventTable = function(a) {
-			var events = App.events.filter(function(d) { return d['Academy Name'] + d['Academy School'] === a['Academy Name'] + a['High School']; });
-			if (events.length === 0) {
+			var employers = getEmployerData(a);			
+			if (employers.length === 0) {
 				$('.event-list-container').hide();
 			} else {
 				$('.event-list-container').show();
-				
-				var employerHours = {};
-				for (var i = 0; i < events.length; i++) {
-					var emp = events[i].Employer;
-					if (typeof employerHours[emp] === 'undefined') employerHours[emp] = 0;
-					employerHours[emp] += Util.strToFloat(events[i].Total);
-				}
-				var employers = [];
-				for (var emp in employerHours) employers.push({employer: emp, value: employerHours[emp]});				
-				employers.sort(function(a, b) {
-					if (+a.value > +b.value) return -1;
-					else if (+a.value < +b.value) return 1;
-					else return 0;
-				});
 				
 				var eventRows = d3.select('.academy-event-list tbody').selectAll('tr')
 					.data(employers);
@@ -131,9 +117,89 @@ var App = App || {};
 			}
 		};
 		
+		
+		// set up bubble chart
+		var diameter = 400;
+		var bubbleChartMargin = {top: 0, left: 80, right: 80, bottom: 0};
+		var colorScale = d3.scale.category20c();
+		var bubble = d3.layout.pack()
+			.sort(null)
+			.size([diameter, diameter])
+			.padding(1.5);
+		var bubbleChart = d3.select('.employer-bubble-chart')
+			.attr('width', diameter + bubbleChartMargin.left + bubbleChartMargin.right)
+			.attr('height', diameter + bubbleChartMargin.top + bubbleChartMargin.bottom)
+			.append('g')
+				.attr('transform', 'translate(' + bubbleChartMargin.left + ',' + bubbleChartMargin.top + ')');
+		
+		var updateBubbleChart = function(a) {
+			var employers = getEmployerData(a);
+			
+			var nodes = bubbleChart.selectAll('.node')
+				.data(bubble.nodes({children: employers}));
+			var newNodes = nodes.enter().append('g')
+				.attr('class', 'node')
+				.each(function() {
+					$(this).tooltipster({
+						onlyOne: true,
+						contentAsHTML: true
+					});
+				});
+			newNodes.append('title');
+			newNodes.append('circle');
+			newNodes.append('text');
+				
+			nodes.transition()
+				.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
+				.style('display', function(d) { return (d.depth === 0) ? 'none' : 'block'; });
+			nodes.select('title')
+				.text(function(d) { return d.employer; });
+			nodes.select('circle')
+				.attr('r', function(d) { return d.r; })
+				.style('fill', function(d) { return colorScale(d.employer); });
+			nodes.select('text')
+				.style('display', function(d) { return (d.percOfMax < 0.1) ? 'none' : 'block'; })
+				.html(function(d) { return d.employer; });
+			nodes.each(function(d) {
+				var $this = $(this);
+				$this.tooltipster('option', 'offsetX', d.r);
+				$this.tooltipster('option', 'offsetY', -d.r);
+				$this.tooltipster('content', d.employer);
+			});
+			nodes.exit().remove();
+		};
+		
+		
+		var updateAll = function(academy) {
+			updateData(academy);
+			updateDistributionChart(academy);
+			updateEventTable(academy);
+			updateBubbleChart(academy);			
+		};
+		updateAll(academy);
+	};
+	
+	var getEmployerData = function(a) {
+		var events = App.events.filter(function(d) { return d['Academy Name'] + d['Academy School'] === a['Academy Name'] + a['High School']; });
 
-		updateData(academy);
-		updateDistributionChart(academy);
-		updateEventTable(academy);
+		var employerHours = {};
+		var maxHours = 0;
+		for (var i = 0; i < events.length; i++) {
+			var emp = events[i].Employer;
+			if (typeof employerHours[emp] === 'undefined') employerHours[emp] = 0;
+			employerHours[emp] += Util.strToFloat(events[i].Total);
+			
+			// record max
+			if (employerHours[emp] > maxHours) maxHours = employerHours[emp];
+		}
+		
+		var employers = [];
+		for (var emp in employerHours) employers.push({employer: emp, value: employerHours[emp], percOfMax: employerHours[emp] / maxHours});				
+		employers.sort(function(a, b) {
+			if (+a.value > +b.value) return -1;
+			else if (+a.value < +b.value) return 1;
+			else return 0;
+		});
+		return employers;
 	};
 })();

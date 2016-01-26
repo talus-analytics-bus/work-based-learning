@@ -26,23 +26,33 @@
     
     <!-- ----------- TEMPLATES ------------- -->
     <script id="home-template" type="text/x-handlebars-template">
-    	<div class="container">
-    		<div class="btn-group">
-    			<div class="btn btn-default active">Academy</div>
-    			<div class="btn btn-default">District/Community</div>
-    			<div class="btn btn-default">Employer/Community Partner</div>
-    			<div class="btn btn-default">Sector</div>
-    		</div>
-    		<div class="table-contents">
-	    		<table class="academy-table table table-condensed table-hover">
-	    			<thead>
-	    				<tr></tr>
-	    			</thead>
-	    			<tbody></tbody>
-	    		</table>
-	    	</div>
-    	</div>
-    </script>
+		<div class="container home-container">
+			<div>
+				<div class="big-button btn btn-default" page="academy">
+					<img src="img/academy.png">
+					<div>View by Academy</div>
+				</div>
+			</div>
+			<div>
+				<div class="big-button btn btn-default" page="district">
+					<img src="img/community.png">
+					<div>View by District/Community</div>
+				</div>
+			</div>
+			<div>
+				<div class="big-button btn btn-default" page="employer">
+					<img src="img/employer.png">
+					<div>View by Employer/Community Partner</div>
+				</div>
+			</div>
+			<div>
+				<div class="big-button btn btn-default" page="sector">
+					<img src="img/sector.png">
+					<div>View by Sector</div>
+				</div>
+			</div>
+		</div>
+	</script>
 
     <script id="academy-template" type="text/x-handlebars-template">
     	<div class="container">
@@ -69,19 +79,28 @@
 					<span class="academy-sector-text"></span>
 				</div>
 			</div>
-			<div class="chart-container">
+			<div class="academy-distribution-container chart-container">
+				<div class="chart-title">Donations by Type</div>
 				<svg class="academy-distribution-chart"></svg>
 			</div>
-			<div class="event-list-container">
-				<table class="academy-event-list table table-condensed table-hover">
-					<thead>
-						<tr>
-							<td>Employer</td>
-							<td>Hours</td>
-						</tr>
-					</thead>
-					<tbody></tbody>
-				</table>
+			<div class="event-list-container row">
+				<div class="col-md-5">
+					<div class="chart-title">Employer Volunteer Work (in hours)</div>
+					<table class="academy-event-list table table-condensed table-hover">
+						<thead>
+							<tr>
+								<td>Employer</td>
+								<td>Hours</td>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+				<div class="col-md-7">
+					<div class="chart-title">Employer Contribution</div>
+					<svg class="employer-bubble-chart"></svg>
+					<div class="chart-note">Hover over circles to see employer name, if not displayed</div>
+				</div>
 			</div>
 		</div>
 	</script>	
@@ -93,9 +112,39 @@
 				<select class="district-select form-control"></select>
 			</div>
 			<div class="district-name-text"></div>
-			<div class="chart-container">
+			<div class="district-data-container">
+				<div>
+					<div class="district-data-label">County: </div>
+					<span class="district-county-text"></span>
+				</div>
+				<div>
+					<div class="district-data-label">High School(s): </div>
+					<span class="district-high-school-text"></span>
+				</div>
+			</div>
+			<div class="district-distribution-container chart-container">
+				<div class="chart-title">Donations by Type, by High School</div>
 				<svg class="district-distribution-chart"></svg>
 				<svg class="legend"></svg>
+			</div>
+			<div class="event-list-container row">
+				<div class="col-md-5">
+					<div class="chart-title">Employer Volunteer Work (in hours)</div>
+					<table class="academy-event-list table table-condensed table-hover">
+						<thead>
+							<tr>
+								<td>Employer</td>
+								<td>Hours</td>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+				<div class="col-md-7">
+					<div class="chart-title">Employer Contribution</div>
+					<svg class="employer-bubble-chart"></svg>
+					<div class="chart-note">Hover over circles to see employer name, if not displayed</div>
+				</div>
 			</div>
 		</div>
 	</script>
@@ -107,12 +156,35 @@
 				<select class="sector-select form-control"></select>
 			</div>
 			<div class="sector-name-text"></div>
-			<div class="chart-container">
+			<div class="sector-distribution-container chart-container">
+				<div class="chart-title">Sector Donations by Type, by High School</div>
 				<svg class="sector-distribution-chart"></svg>
 				<svg class="legend"></svg>
 			</div>
+			<div>
+				<svg class="sector-district-list"></svg>
+			</div>
 		</div>
 	</script>
+
+    <script id="list-template" type="text/x-handlebars-template">
+    	<div class="container">
+    		<div class="btn-group">
+    			<div class="btn btn-default active">Academy</div>
+    			<div class="btn btn-default">District/Community</div>
+    			<div class="btn btn-default">Employer/Community Partner</div>
+    			<div class="btn btn-default">Sector</div>
+    		</div>
+    		<div class="table-contents">
+	    		<table class="academy-table table table-condensed table-hover">
+	    			<thead>
+	    				<tr></tr>
+	    			</thead>
+	    			<tbody></tbody>
+	    		</table>
+	    	</div>
+    	</div>
+    </script>
 
 	
 	<!-- General Libraries
