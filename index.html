@@ -39,12 +39,12 @@
 					<div>View by District/Community</div>
 				</div>
 			</div>
-			<div>
+			<!--<div>
 				<div class="big-button btn btn-default" page="employer">
 					<img src="img/employer.png">
 					<div>View by Employer/Community Partner</div>
 				</div>
-			</div>
+			</div>-->
 			<div>
 				<div class="big-button btn btn-default" page="sector">
 					<img src="img/sector.png">
@@ -161,8 +161,24 @@
 				<svg class="sector-distribution-chart"></svg>
 				<svg class="legend"></svg>
 			</div>
-			<div>
-				<svg class="sector-district-list"></svg>
+			<div class="event-list-container row">
+				<div class="col-md-5">
+					<div class="chart-title">Donations by District</div>
+					<table class="academy-event-list table table-condensed table-hover">
+						<thead>
+							<tr>
+								<td>District</td>
+								<td>Donations</td>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+				<div class="col-md-7">
+					<div class="chart-title">District Donations</div>
+					<svg class="employer-bubble-chart"></svg>
+					<div class="chart-note">Hover over circles to see employer name, if not displayed</div>
+				</div>
 			</div>
 		</div>
 	</script>

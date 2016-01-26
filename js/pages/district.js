@@ -2,7 +2,7 @@ var App = App || {};
 
 (function() {
 	App.initDistrict = function(name) {
-		if (typeof name === 'undefined') var name = App.districts[0]['School District'];
+		if (typeof name === 'undefined') var name = App.academies[0]['School District'];
 		
 		// fill sector select
 		var districtSelect = d3.select('.district-select').on('change', function() {
@@ -264,4 +264,5 @@ var App = App || {};
 			else return 0;
 		});
 		return employers;
-	};})();
+	};
+})();
