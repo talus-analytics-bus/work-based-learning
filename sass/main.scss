@@ -4,6 +4,7 @@
 @import 'pages/academy';
 @import 'pages/district';
 @import 'pages/employer';
+@import 'pages/home';
 @import 'pages/sector';
 
 body { font-family: 'Open Sans', sans-serif; }
@@ -82,36 +83,6 @@ rect { shape-rendering: crispEdges; }
   cursor: pointer;
   color: #333;
   &:hover { color: #000; }
-}
-
-
-/* --- Home Page --- */
-.home-container {
-  margin-top: 5px;
-}
-.big-button {
-  font-size: 1.2em;
-  padding: 8px 16px;
-  margin: 10px 10px 5px;
-  img {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-  }
-  div {
-    display: inline-block;
-    position: relative;
-    top: 2px;
-  }
-}
-.overall-chart-container {
-  margin-top: 30px;
-  padding-top: 30px;
-  border-top: 1px solid #ccc;
-}
-.progress-chart {
-  font-size: 1.1em;
-  margin-top: 40px;
 }
 
 

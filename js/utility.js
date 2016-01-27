@@ -2,6 +2,7 @@ var Util = {};
 
 Util.comma = d3.format(',.1f');
 Util.monetize = d3.format('$,f');
+Util.percentize = d3.format('.1%');
 
 // assigns an ID attribute to each object in an array of objects
 Util.assignId = function(array) {

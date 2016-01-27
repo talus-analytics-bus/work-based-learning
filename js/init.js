@@ -3,31 +3,7 @@ var App = App || {};
 (function() {
 	var LOCAL_VERSION = (typeof App.academies !== 'undefined');
 	
-	var init = function() {	
-		// get unique list of sectors
-		var sectors = App.academies
-			.map(function(d) { return d['Primary CTE Industry Sector']; })
-			.filter(function(d) { return d !== '#N/A'; });
-		App.sectors = Util.getUnique(sectors);
-		
-		// get unique list of districts
-		var districts = App.academies
-			.map(function(d) { return d['School District']; })
-			.filter(function(d) { return d !== '#N/A'; });
-		App.districts = Util.getUnique(districts);
-		
-		// get unique list of employers
-		var employers = App.events
-			.map(function(d) { return d.Employer; })
-			.filter(function(d) { return d !== '#N/A' && d !== ''; });
-		App.employers = Util.getUnique(employers);
-		
-		// assign ids
-		Util.assignId(App.academies);
-		Util.assignId(App.events);
-		Util.assignId(App.districts);
-		Util.assignId(App.employers);
-		
+	var init = function() {			
 		App.initialize();
 		Routing.precompileTemplates();	
 		Routing.initializeRoutes();
@@ -38,9 +14,13 @@ var App = App || {};
 	} else {
 		queue()
 			.defer(d3.tsv, 'data/academies.tsv')
+			.defer(d3.tsv, 'data/districts.tsv')
+			.defer(d3.tsv, 'data/employers.tsv')
 			.defer(d3.tsv, 'data/events.tsv')
-			.await(function(error, academies, events) {
+			.await(function(error, academies, districts, employers, events) {
 				App.academies = academies;
+				App.districts = districts;
+				App.employers = employers;
 				App.events = events;
 				init();
 			});

@@ -28,7 +28,18 @@
     <!-- ----------- TEMPLATES ------------- -->
     <script id="home-template" type="text/x-handlebars-template">
 		<div class="home-container container">
-			<div>
+			<div class="progress-bar-container">
+				<div class="chart-title">Work-Based Learning Contribution Target Match</div>
+				<div class="progress-bar-shell">
+					<div class="progress-bar"></div>
+					<div class="progress-text"></div>
+				</div>
+			</div>
+			<div class="overall-chart-container">
+				<div class="chart-title">Work-Based Learning Contribution Overview</div>
+				<svg class="overall-distribution-chart"></svg>						
+			</div>
+			<div class="home-button-container">
 				<div class="big-button btn btn-default" page="academy">
 					<img src="img/academy.png">
 					<div>View by Academy</div>
@@ -37,8 +48,6 @@
 					<img src="img/community.png">
 					<div>View by District/Community</div>
 				</div>
-			</div>
-			<div>
 				<div class="big-button btn btn-default" page="employer">
 					<img src="img/employer.png">
 					<div>View by Employer/Community Partner</div>
@@ -47,14 +56,6 @@
 					<img src="img/sector.png">
 					<div>View by Sector</div>
 				</div>
-			</div>
-			<div class="overall-chart-container">
-				<div class="chart-title">Work-Based Learning Initiative Overview</div>
-				<svg class="overall-distribution-chart"></svg>
-			</div>
-			<div>
-				<svg class="progress-chart"></svg>
-				<div class="progress-text"></div>
 			</div>
 		</div>
 	</script>
@@ -90,21 +91,27 @@
 			</div>
 			<div class="event-list-container row">
 				<div class="col-md-5">
-					<div class="chart-title">Employer Volunteer Work (in hours)</div>
-					<table class="academy-event-list table table-condensed table-hover">
-						<thead>
-							<tr>
-								<td>Employer</td>
-								<td>Hours</td>
-							</tr>
-						</thead>
-						<tbody></tbody>
-					</table>
+					<div class="chart-title">Employer Volunteer Work</div>
+					<div class="event-list-btn-group btn-group margin-top-20">
+						<div class="btn btn-default active" stat="hours">Hours</div>
+						<div class="btn btn-default" stat="money">Donations</div>
+					</div>
+					<div>
+						<table class="academy-event-list table table-condensed table-hover">
+							<thead>
+								<tr>
+									<td>Employer</td>
+									<td>Hours</td>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
 				</div>
 				<div class="col-md-7">
-					<div class="chart-title">Employer Contribution</div>
+					<div class="chart-title">Employer Contribution, by Donation Amount</div>
 					<svg class="employer-bubble-chart"></svg>
-					<div class="chart-note">Hover over circles to see employer name, if not displayed</div>
+					<div class="chart-note">Hover over circles to see employer/community partner name, if not displayed</div>
 				</div>
 			</div>
 		</div>
@@ -135,6 +142,10 @@
 			<div class="event-list-container row">
 				<div class="col-md-5">
 					<div class="chart-title">Employer Volunteer Work (in hours)</div>
+					<div class="event-list-btn-group btn-group margin-top-20">
+						<div class="btn btn-default active" stat="hours">Hours</div>
+						<div class="btn btn-default" stat="money">Donations</div>
+					</div>
 					<table class="academy-event-list table table-condensed table-hover">
 						<thead>
 							<tr>
@@ -146,9 +157,9 @@
 					</table>
 				</div>
 				<div class="col-md-7">
-					<div class="chart-title">Employer Contribution</div>
+					<div class="chart-title">Employer Contribution, by Donation Amount</div>
 					<svg class="employer-bubble-chart"></svg>
-					<div class="chart-note">Hover over circles to see employer name, if not displayed</div>
+					<div class="chart-note">Hover over circles to see employer/community partner name, if not displayed</div>
 				</div>
 			</div>
 		</div>
@@ -168,7 +179,7 @@
 			</div>
 			<div class="event-list-container row">
 				<div class="col-md-5">
-					<div class="chart-title">Donations by District</div>
+					<div class="chart-title">Donations Received by District</div>
 					<table class="academy-event-list table table-condensed table-hover">
 						<thead>
 							<tr>
@@ -182,7 +193,7 @@
 				<div class="col-md-7">
 					<div class="chart-title">District Donations</div>
 					<svg class="employer-bubble-chart"></svg>
-					<div class="chart-note">Hover over circles to see employer name, if not displayed</div>
+					<div class="chart-note">Hover over circles to see employer/community partner name, if not displayed</div>
 				</div>
 			</div>
 			<div class="academy-list-container row">
@@ -201,7 +212,7 @@
 				<div class="col-md-7">
 					<div class="chart-title">Academy Donations</div>
 					<svg class="academy-bubble-chart"></svg>
-					<div class="chart-note">Hover over circles to see employer name, if not displayed</div>
+					<div class="chart-note">Hover over circles to see the academy name, if not displayed</div>
 				</div>
 			</div>
 		</div>
@@ -210,7 +221,7 @@
     <script id="employer-template" type="text/x-handlebars-template">
 		<div class="container">
 			<div class="employer-select-container">
-				<div class="select-label">Select an employer:</div>
+				<div class="select-label">Select an employer/community partner:</div>
 				<select class="employer-select form-control"></select>
 			</div>
 			<div class="employer-name-text"></div>
@@ -276,12 +287,13 @@
 	<script src="build/lib.min.js"></script>
 		
 	<!-- Data (for local version only) --->
-	<script src="data/data.js"></script>
+	<!--<script src="data/data.js"></script>-->
     
     <!-- Project Specific Files -->
     <script src="js/pages/academy.js"></script>
     <script src="js/pages/district.js"></script>
     <script src="js/pages/employer.js"></script>
+    <script src="js/pages/home.js"></script>
     <script src="js/pages/sector.js"></script>
     <script src="js/utility.js"></script>
     <script src="js/routing.js"></script>
