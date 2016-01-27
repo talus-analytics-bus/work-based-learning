@@ -112,6 +112,9 @@ var App = App || {};
 				
 				eventRows.select('td:first-child').text(function(d) { return d.employer; });
 				eventRows.select('td:nth-child(2)').text(function(d) { return Util.comma(d.value); });
+				eventRows.on('click', function(d) {
+					hasher.setHash('employer/' + d.employer);
+				});
 				
 				eventRows.exit().remove();
 			}
@@ -160,6 +163,9 @@ var App = App || {};
 			nodes.select('text')
 				.style('display', function(d) { return (d.percOfMax < 0.1) ? 'none' : 'block'; })
 				.html(function(d) { return d.employer; });
+			nodes.on('click', function(d) {
+				hasher.setHash('employer/' + d.employer);
+			});
 			nodes.each(function(d) {
 				var $this = $(this);
 				$this.tooltipster('option', 'offsetX', d.r);

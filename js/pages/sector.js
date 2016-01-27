@@ -64,7 +64,8 @@ var App = App || {};
 		
 		
 		var updateDistributionChart = function(sector) {
-			var academyColorScale = d3.scale.category20c();
+			var academyColorScale = d3.scale.category20c()
+				.range(['#3182bd','#6baed6','#9ecae1','#c6dbef']);
 
 			var sectorData = [];
 			for (var i = 0; i < App.spendingCategories.length; i++) {
@@ -127,7 +128,7 @@ var App = App || {};
 	 				});
 				});
 			bars.transition()
-				.style('fill', function(d) { return academyColorScale(d.academy); })
+				.style('fill', function(d) { if (d.value > 0) return academyColorScale(d.academy); })
 				.attr('y', function(d) { return y(d.y1); })
 				.attr('height', function(d) { return y(d.y0) - y(d.y1); })
 				.each('end', function(d) {
@@ -170,7 +171,7 @@ var App = App || {};
 		
 		
 		var updateEventTable = function(a) {
-			var employers = getDistrictData(a);			
+			var employers = getDistrictData(a).slice(0, 10);			
 			if (employers.length === 0) {
 				$('.event-list-container').hide();
 			} else {
@@ -183,6 +184,9 @@ var App = App || {};
 				
 				eventRows.select('td:first-child').text(function(d) { return d.employer; });
 				eventRows.select('td:nth-child(2)').text(function(d) { return Util.monetize(d.value); });
+				eventRows.on('click', function(d) {
+					hasher.setHash('district/' + d.employer);
+				});
 				
 				eventRows.exit().remove();
 			}
@@ -224,6 +228,9 @@ var App = App || {};
 			nodes.select('circle')
 				.attr('r', function(d) { return d.r; })
 				.style('fill', function(d) { return colorScale(d.employer); });
+			nodes.on('click', function(d) {
+				hasher.setHash('district/' + d.employer);
+			});
 			nodes.each(function(d) {
 				var $this = $(this);
 				$this.tooltipster('option', 'offsetX', d.r);
@@ -250,6 +257,10 @@ var App = App || {};
 				
 				eventRows.select('td:first-child').text(function(d) { return d.employer; });
 				eventRows.select('td:nth-child(2)').text(function(d) { return Util.monetize(d.value); });
+				eventRows.on('click', function(d) {
+					var academyId = App.academies.filter(function(dd) { return dd['Academy Name'] === d.employer; })[0].id;
+					hasher.setHash('academy/' + academyId);
+				});
 				
 				eventRows.exit().remove();
 			}
@@ -284,6 +295,10 @@ var App = App || {};
 			nodes.select('circle')
 				.attr('r', function(d) { return d.r; })
 				.style('fill', function(d) { return aColorScale(d.employer); });
+			nodes.on('click', function(d) {
+				var academyId = App.academies.filter(function(dd) { return dd['Academy Name'] === d.employer; })[0].id;
+				hasher.setHash('academy/' + academyId);
+			});
 			nodes.each(function(d) {
 				var $this = $(this);
 				$this.tooltipster('option', 'offsetX', d.r);

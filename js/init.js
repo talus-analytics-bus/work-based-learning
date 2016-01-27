@@ -16,10 +16,17 @@ var App = App || {};
 			.filter(function(d) { return d !== '#N/A'; });
 		App.districts = Util.getUnique(districts);
 		
+		// get unique list of employers
+		var employers = App.events
+			.map(function(d) { return d.Employer; })
+			.filter(function(d) { return d !== '#N/A' && d !== ''; });
+		App.employers = Util.getUnique(employers);
+		
 		// assign ids
 		Util.assignId(App.academies);
 		Util.assignId(App.events);
 		Util.assignId(App.districts);
+		Util.assignId(App.employers);
 		
 		App.initialize();
 		Routing.precompileTemplates();	

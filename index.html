@@ -22,34 +22,39 @@
 			<img class="logo" src="img/innovate-tk-logo.png" alt="Innovate TK" width="230" height="91">
     	</div>
     </div>
+    <div class="breadcrumbs-bar"></div>
     <div id="page-content"></div>
     
     <!-- ----------- TEMPLATES ------------- -->
     <script id="home-template" type="text/x-handlebars-template">
-		<div class="container home-container">
+		<div class="home-container container">
 			<div>
 				<div class="big-button btn btn-default" page="academy">
 					<img src="img/academy.png">
 					<div>View by Academy</div>
 				</div>
-			</div>
-			<div>
 				<div class="big-button btn btn-default" page="district">
 					<img src="img/community.png">
 					<div>View by District/Community</div>
 				</div>
 			</div>
-			<!--<div>
+			<div>
 				<div class="big-button btn btn-default" page="employer">
 					<img src="img/employer.png">
 					<div>View by Employer/Community Partner</div>
 				</div>
-			</div>-->
-			<div>
 				<div class="big-button btn btn-default" page="sector">
 					<img src="img/sector.png">
 					<div>View by Sector</div>
 				</div>
+			</div>
+			<div class="overall-chart-container">
+				<div class="chart-title">Work-Based Learning Initiative Overview</div>
+				<svg class="overall-distribution-chart"></svg>
+			</div>
+			<div>
+				<svg class="progress-chart"></svg>
+				<div class="progress-text"></div>
 			</div>
 		</div>
 	</script>
@@ -201,6 +206,38 @@
 			</div>
 		</div>
 	</script>
+	
+    <script id="employer-template" type="text/x-handlebars-template">
+		<div class="container">
+			<div class="employer-select-container">
+				<div class="select-label">Select an employer:</div>
+				<select class="employer-select form-control"></select>
+			</div>
+			<div class="employer-name-text"></div>
+			<div class="employer-data-container">
+				<div>
+					<div class="employer-data-label">Contact First Name: </div>
+					<span class="employer-first-name-text"></span>
+				</div>
+				<div>
+					<div class="employer-data-label">Contact Last Name: </div>
+					<span class="employer-last-name-text"></span>
+				</div>
+				<div>
+					<div class="employer-data-label">Contact Phone Number: </div>
+					<span class="employer-phone-text"></span>
+				</div>
+				<div>
+					<div class="employer-data-label">Contact Email Address: </div>
+					<span class="employer-email-text"></span>
+				</div>
+			</div>
+			<div class="employer-distribution-container chart-container">
+				<div class="chart-title">Employer Volunteer Hours by Sector</div>
+				<svg class="employer-distribution-chart"></svg>
+			</div>    		
+    	</div>
+    </script>
 
     <script id="list-template" type="text/x-handlebars-template">
     	<div class="container">
@@ -244,6 +281,7 @@
     <!-- Project Specific Files -->
     <script src="js/pages/academy.js"></script>
     <script src="js/pages/district.js"></script>
+    <script src="js/pages/employer.js"></script>
     <script src="js/pages/sector.js"></script>
     <script src="js/utility.js"></script>
     <script src="js/routing.js"></script>

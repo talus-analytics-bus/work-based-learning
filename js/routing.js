@@ -15,26 +15,37 @@ var Routing = {};
         crossroads.addRoute('/', function() {
             loadTemplate('home');
             App.initHome();
+            setBreadcrumbs('home');
             window.scrollTo(0, 0);
         });
         crossroads.addRoute('/list', function() {
         	loadTemplate('list');
         	App.initList();
+            setBreadcrumbs('list');
         	window.scrollTo(0, 0);
         });
         crossroads.addRoute('/academy/:{id}:', function(id) {
         	loadTemplate('academy');
         	App.initAcademy(id);
+            setBreadcrumbs('academy');
         	window.scrollTo(0, 0);
         });
         crossroads.addRoute('/sector/:{name}:', function(name) {
         	loadTemplate('sector');
         	App.initSector(name);
+            setBreadcrumbs('sector');
         	window.scrollTo(0, 0);
         });
         crossroads.addRoute('/district/:{name}:', function(name) {
         	loadTemplate('district');
         	App.initDistrict(name);
+            setBreadcrumbs('district');
+        	window.scrollTo(0, 0);
+        });
+        crossroads.addRoute('/employer/:{name}:', function(name) {
+        	loadTemplate('employer');
+        	App.initEmployer(name);
+            setBreadcrumbs('employer');
         	window.scrollTo(0, 0);
         });
 
@@ -43,6 +54,16 @@ var Routing = {};
         hasher.initialized.add(parseHash); //parse initial hash
         hasher.changed.add(parseHash); //parse hash changes
         hasher.init(); //start listening for history change
+    };
+    
+    var setBreadcrumbs = function(page) {
+    	var htmlStr = '<div class="home-link bread-link">Home</div>';
+    	if (page !== 'home') {
+    		htmlStr += '&nbsp; > &nbsp;<div class="' + page + '-link bread-link">' + page.charAt(0).toUpperCase() + page.slice(1) + '</div>';
+    	}
+    	$('.breadcrumbs-bar').html(htmlStr);
+    	$('.home-link').click(function() { hasher.setHash(''); });
+    	$('.' + page + '-link').click(function() { hasher.setHash(page); });
     };
 	
     var parseHash = function(newHash) { crossroads.parse(newHash); };

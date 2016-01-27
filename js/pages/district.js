@@ -176,7 +176,7 @@ var App = App || {};
 
 
 		var updateEventTable = function(a) {
-			var employers = getEmployerData(a);			
+			var employers = getEmployerData(a).slice(0, 10);			
 			if (employers.length === 0) {
 				$('.event-list-container').hide();
 			} else {
@@ -189,6 +189,9 @@ var App = App || {};
 				
 				eventRows.select('td:first-child').text(function(d) { return d.employer; });
 				eventRows.select('td:nth-child(2)').text(function(d) { return Util.comma(d.value); });
+				eventRows.on('click', function(d) {
+					hasher.setHash('employer/' + d.employer);
+				});
 				
 				eventRows.exit().remove();
 			}
@@ -230,6 +233,9 @@ var App = App || {};
 			nodes.select('circle')
 				.attr('r', function(d) { return d.r; })
 				.style('fill', function(d) { return colorScale(d.employer); });
+			nodes.on('click', function(d) {
+				hasher.setHash('employer/' + d.employer);
+			});
 			nodes.each(function(d) {
 				var $this = $(this);
 				$this.tooltipster('option', 'offsetX', d.r);

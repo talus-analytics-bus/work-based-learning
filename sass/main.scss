@@ -3,12 +3,10 @@
 @import 'components/charts';
 @import 'pages/academy';
 @import 'pages/district';
+@import 'pages/employer';
 @import 'pages/sector';
 
 body { font-family: 'Open Sans', sans-serif; }
-#page-content {
-  margin-top: -20px;
-}
 .container {
   min-height: 90vh;
   padding: 20px 30px 50px;
@@ -47,9 +45,11 @@ select.form-control {
   text-align: center;
 }
 .chart-note { font-style: italic; }
+rect { shape-rendering: crispEdges; }
 
 
 /* --- Nav Bar --- */
+.navbar { margin-bottom: 0px; }
 .header-wrapper {
   position: relative;
   padding: 20px;
@@ -69,25 +69,49 @@ select.form-control {
   top: -1px;
   left: 20px;
 }
+.breadcrumbs-bar {
+  padding: 10px 40px;
+  font-size: 1.1em;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  @include gradient(#fafafa, #f6f6f6);
+}
+.bread-link {
+  display: inline-block;
+  font-weight: 600;
+  cursor: pointer;
+  color: #333;
+  &:hover { color: #000; }
+}
+
 
 /* --- Home Page --- */
 .home-container {
-  text-align: left;
+  margin-top: 5px;
 }
 .big-button {
   font-size: 1.2em;
-  margin-bottom: 15px;
   padding: 8px 16px;
+  margin: 10px 10px 5px;
   img {
     width: 30px;
     height: 30px;
-    margin-right: 15px;
+    margin-right: 10px;
   }
   div {
     display: inline-block;
     position: relative;
     top: 2px;
   }
+}
+.overall-chart-container {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid #ccc;
+}
+.progress-chart {
+  font-size: 1.1em;
+  margin-top: 40px;
 }
 
 
