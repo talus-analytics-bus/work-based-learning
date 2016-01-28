@@ -1,8 +1,11 @@
 var App = App || {};
 
 (function() {
+	
 	App.initEmployer = function(name) {
 		if (typeof name === 'undefined') var name = 'CSET';
+
+		var sectors = App.sectors.concat(['Other']);
 
 		// fill sector select
 		var employerSelect = d3.select('.employer-select').on('change', function() {
@@ -13,24 +16,28 @@ var App = App || {};
 		employerSelect.selectAll('option')
 			.data(App.employers.sort())
 			.enter().append('option')
-				.property('value', function(d) { return d; })
-				.text(function(d) { return d; });
+				.property('value', function(d) { return d.Employer; })
+				.text(function(d) { return d.Employer; });
 		employerSelect.property('value', name);
 		
 		var updateData = function(emp) {
 			$('.employer-name-text').text(emp);
 			
-			var employerInfo = App.events.filter(function(d) { return d.Employer === emp; })[0];
-			$('.employer-first-name-text').text(employerInfo['Contact First Name']);
-			$('.employer-last-name-text').text(employerInfo['Contact Last Name']);
-			$('.employer-phone-text').text(employerInfo['Contact Phone']);
-			$('.employer-email-text').text(employerInfo['Contact Email']);
+			var employerInfo = App.employers.filter(function(d) { return d.Employer === emp; })[0];
+			var firstName = employerInfo['Contact First Name'];
+			var lastName = employerInfo['Contact Last Name'];
+			var phone = employerInfo['Contact Phone'];
+			var email = employerInfo['Contact Email'];
+			$('.employer-first-name-text').text((firstName === '') ? 'No Data' : firstName);
+			$('.employer-last-name-text').text((lastName === '') ? 'No Data' : lastName);
+			$('.employer-phone-text').text((phone === '') ? 'No Data' : phone);
+			$('.employer-email-text').text((email === '') ? 'No Data' : email);
 		};
 		updateData(name);
 
 
 		// build the chart
-		var margin = {top: 30, right: 120, bottom: 180, left: 80};
+		var margin = {top: 30, right: 100, bottom: 180, left: 80};
 		var width = 960 - margin.left - margin.right;
 		var height = 550 - margin.top - margin.bottom;
    		var chart = d3.select('.employer-distribution-chart')
@@ -41,9 +48,12 @@ var App = App || {};
 
 
 		var x = d3.scale.ordinal()
-			.domain(App.sectors)
+			.domain(sectors)
 			.rangeRoundBands([0, width], 0.3);
 		var xAxis = d3.svg.axis().scale(x)
+			.tickFormat(function(d) {
+				return (d === 'Manufacturing & Product Design/Engineering & Design') ? 'Manufacturing & Product Design' : d;
+			})
 			.orient('bottom');
 		var xAxisG = chart.append('g')
 			.attr('class', 'x axis')
@@ -67,25 +77,31 @@ var App = App || {};
 		
 		var updateDistributionChart = function(emp) {
 			var valuesBySector = {};
-			for (var i = 0; i < App.sectors.length; i++) valuesBySector[App.sectors[i]] = 0;
+			for (var i = 0; i < sectors.length; i++) valuesBySector[sectors[i]] = 0;
 			for (var i = 0; i < App.events.length; i++) {
 				var event = App.events[i];
 				if (event.Employer === emp) {
 					var sector = event.Sector;
-					var val = Util.strToFloat(event.Hours);
-					if (!isNaN(val)) valuesBySector[sector] += val;
+					var val = Util.strToFloat(event.Total);
+					if (sectors.indexOf(sector) === -1) {
+						if (!isNaN(val)) valuesBySector.Other += val;
+					} else {
+						if (!isNaN(val)) valuesBySector[sector] += val;
+					}
 				}
 			}
 			
 			
 			// fix y-axis scale
-			var values = App.sectors.map(function(d) { return valuesBySector[d]; });
-			y.domain([0, d3.max(values)]);
+			var values = sectors.map(function(d) { return valuesBySector[d]; });
+			var max = d3.max(values);
+			if (max === 0) max = 10;
+			y.domain([0, max]);
 			yAxis.scale(y);
 			yAxisG.call(yAxis);
 
 			var barGroups = chart.selectAll('.bar-group')
-				.data(App.sectors);
+				.data(sectors);
 			var newBarGroups = barGroups.enter().append('g')
 				.attr('class', 'bar-group');
 			newBarGroups.append('rect')

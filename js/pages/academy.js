@@ -229,7 +229,7 @@ var App = App || {};
 				employerInfo[emp].money += Util.strToFloat(event.Other);
 				employerInfo[emp].money += Util.strToFloat(event['If Paid Internship, Number of Internship Hours']) * App.payRate;
 				// record max
-				if (employerInfo[emp] > maxHours) maxHours = employerInfo[emp];
+				if (employerInfo[emp].hours > maxHours) maxHours = employerInfo[emp].hours;
 			}
 		}
 		
@@ -239,7 +239,7 @@ var App = App || {};
 				employer: emp,
 				hours: employerInfo[emp].hours,
 				money: employerInfo[emp].money,
-				value: employerInfo[emp].money,
+				value: employerInfo[emp].hours,
 				percOfMax: employerInfo[emp].hours / maxHours
 			});
 		}			

@@ -23,7 +23,9 @@ var App = App || {};
 		
 		
 		// update data text
+		var currSector = name;
 		var updateData = function(sector) {
+			currSector = sector;
 			$('.sector-name-text').html(sector);
 		};
 		updateData(name);
@@ -170,12 +172,24 @@ var App = App || {};
 		updateDistributionChart(name);
 		
 		
-		var updateEventTable = function(a) {
-			var employers = getDistrictData(a).slice(0, 10);			
+		var updateEventTable = function(a, stat) {
+			if (typeof stat === 'undefined') var stat = $('.event-list-btn-group .btn.active').attr('stat');
+			
+			$('.academy-event-list thead td:nth-child(2)').text((stat === 'hours') ? 'Hours' : 'Donations');
+			
+			var employers = getDistrictData(a);	
+
 			if (employers.length === 0) {
 				$('.event-list-container').hide();
 			} else {
 				$('.event-list-container').show();
+
+				employers.sort(function(a, b) {
+					if (+a[stat] > +b[stat]) return -1;
+					else if (+a[stat] < +b[stat]) return 1;
+					else return 0;
+				});
+				employers = employers.slice(0, 10);		
 				
 				var eventRows = d3.select('.academy-event-list tbody').selectAll('tr')
 					.data(employers);
@@ -183,7 +197,10 @@ var App = App || {};
 				for (var i = 0; i < 2; i++) newEventRows.append('td');
 				
 				eventRows.select('td:first-child').text(function(d) { return d.employer; });
-				eventRows.select('td:nth-child(2)').text(function(d) { return Util.monetize(d.value); });
+				eventRows.select('td:nth-child(2)').text(function(d) {
+					if (stat === 'hours') return Util.comma(d[stat]);
+					else return Util.monetize(d[stat]);
+				});
 				eventRows.on('click', function(d) {
 					hasher.setHash('district/' + d.employer);
 				});
@@ -191,6 +208,12 @@ var App = App || {};
 				eventRows.exit().remove();
 			}
 		};
+		$('.event-list-btn-group .btn').click(function() {
+			var $this = $(this);
+			$this.addClass('active');
+			$this.siblings().removeClass('active');
+			updateEventTable(currSector, $this.attr('stat'));
+		});
 
 
 		// set up bubble chart
@@ -235,7 +258,7 @@ var App = App || {};
 				var $this = $(this);
 				$this.tooltipster('option', 'offsetX', d.r);
 				$this.tooltipster('option', 'offsetY', -d.r);
-				$this.tooltipster('content', d.employer);
+				$this.tooltipster('content', '<div>' + d.employer + '</div><div><b>' + Util.comma(d.hours) + ' hours</b></div>');
 			});
 			nodes.exit().remove();
 		};
@@ -244,11 +267,12 @@ var App = App || {};
 
 
 		var updateAcademyEventTable = function(a) {
+			$('.academy-list-container').hide();
+
 			var employers = getAcademyData(a);			
 			if (employers.length === 0) {
-				$('.academy-list-container').hide();
 			} else {
-				$('.academy-list-container').show();
+				//$('.academy-list-container').show();
 				
 				var eventRows = d3.select('.sector-academy-list tbody').selectAll('tr')
 					.data(employers);
@@ -313,26 +337,42 @@ var App = App || {};
 
 	
 	var getDistrictData = function(a) {
-		var events = App.academies.filter(function(d) { return d['Primary CTE Industry Sector'] === a; });
-
-		var employerHours = {};
+		var employerInfo = {};
 		var maxHours = 0;
-		for (var i = 0; i < events.length; i++) {
-			var emp = events[i]['School District'];
-			if (typeof employerHours[emp] === 'undefined') employerHours[emp] = 0;
-			employerHours[emp] += Util.strToFloat(events[i].Total);
-			
-			// record max
-			if (employerHours[emp] > maxHours) maxHours = employerHours[emp];
+		for (var i = 0; i < App.events.length; i++) {
+			var event = App.events[i];
+			if (event.Sector === a) {
+				var emp = event['Employer'];
+				if (emp !== '') {
+					if (typeof employerInfo[emp] === 'undefined') {
+						employerInfo[emp] = {
+							hours: 0,
+							money: 0
+						};
+					}
+					employerInfo[emp].hours += Util.strToFloat(event.Total);
+					employerInfo[emp].money += Util.strToFloat(event.Cash);
+					employerInfo[emp].money += Util.strToFloat(event.Equipment);
+					employerInfo[emp].money += Util.strToFloat(event.Scholarship);
+					employerInfo[emp].money += Util.strToFloat(event.Stipend);
+					employerInfo[emp].money += Util.strToFloat(event.Other);
+					employerInfo[emp].money += Util.strToFloat(event['If Paid Internship, Number of Internship Hours']) * App.payRate;
+					// record max
+					if (employerInfo[emp].hours > maxHours) maxHours = employerInfo[emp].hours;
+				}
+			}
 		}
-		
+				
 		var employers = [];
-		for (var emp in employerHours) employers.push({employer: emp, value: employerHours[emp], percOfMax: employerHours[emp] / maxHours});				
-		employers.sort(function(a, b) {
-			if (+a.value > +b.value) return -1;
-			else if (+a.value < +b.value) return 1;
-			else return 0;
-		});
+		for (var emp in employerInfo) {
+			employers.push({
+				employer: emp,
+				hours: employerInfo[emp].hours,
+				money: employerInfo[emp].money,
+				value: employerInfo[emp].hours,
+				percOfMax: employerInfo[emp].hours / maxHours
+			});
+		}			
 		return employers;
 	};
 	var getAcademyData = function(a) {

@@ -9,7 +9,7 @@ var App = App || {};
 		var sectors = App.academies
 			.map(function(d) { return d['Primary CTE Industry Sector']; })
 			.filter(function(d) { return d !== '#N/A'; });
-		App.sectors = Util.getUnique(sectors);
+		App.sectors = Util.getUnique(sectors).sort();
 		
 		// fill in number of hours for each employer
 		for (var i = 0; i < App.employers.length; i++) {

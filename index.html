@@ -91,7 +91,7 @@
 			</div>
 			<div class="event-list-container row">
 				<div class="col-md-5">
-					<div class="chart-title">Employer Volunteer Work</div>
+					<div class="chart-title">Employer/Community Partner Volunteer Work</div>
 					<div class="event-list-btn-group btn-group margin-top-20">
 						<div class="btn btn-default active" stat="hours">Hours</div>
 						<div class="btn btn-default" stat="money">Donations</div>
@@ -109,7 +109,7 @@
 					</div>
 				</div>
 				<div class="col-md-7">
-					<div class="chart-title">Employer Contribution, by Donation Amount</div>
+					<div class="chart-title">Employer/Community Partner Contribution, by Hours Contributed</div>
 					<svg class="employer-bubble-chart"></svg>
 					<div class="chart-note">Hover over circles to see employer/community partner name, if not displayed</div>
 				</div>
@@ -141,26 +141,31 @@
 			</div>
 			<div class="event-list-container row">
 				<div class="col-md-5">
-					<div class="chart-title">Employer Volunteer Work (in hours)</div>
+					<div class="chart-title">Employer/Community Partner Volunteer Work</div>
 					<div class="event-list-btn-group btn-group margin-top-20">
 						<div class="btn btn-default active" stat="hours">Hours</div>
 						<div class="btn btn-default" stat="money">Donations</div>
 					</div>
-					<table class="academy-event-list table table-condensed table-hover">
-						<thead>
-							<tr>
-								<td>Employer</td>
-								<td>Hours</td>
-							</tr>
-						</thead>
-						<tbody></tbody>
-					</table>
+					<div>
+						<table class="academy-event-list table table-condensed table-hover">
+							<thead>
+								<tr>
+									<td>Employer</td>
+									<td>Hours</td>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
 				</div>
 				<div class="col-md-7">
-					<div class="chart-title">Employer Contribution, by Donation Amount</div>
+					<div class="chart-title">Employer/Community Partner Contribution, by Hours Contributed</div>
 					<svg class="employer-bubble-chart"></svg>
 					<div class="chart-note">Hover over circles to see employer/community partner name, if not displayed</div>
 				</div>
+			</div>
+			<div class="empty-event-list-container">
+				<div>There were no employer events found for this district.</div>
 			</div>
 		</div>
 	</script>
@@ -179,7 +184,11 @@
 			</div>
 			<div class="event-list-container row">
 				<div class="col-md-5">
-					<div class="chart-title">Donations Received by District</div>
+					<div class="chart-title">Employer/Community Partner Volunteer Work</div>
+					<div class="event-list-btn-group btn-group margin-top-20">
+						<div class="btn btn-default active" stat="hours">Hours</div>
+						<div class="btn btn-default" stat="money">Donations</div>
+					</div>
 					<table class="academy-event-list table table-condensed table-hover">
 						<thead>
 							<tr>
@@ -191,7 +200,7 @@
 					</table>
 				</div>
 				<div class="col-md-7">
-					<div class="chart-title">District Donations</div>
+					<div class="chart-title">Employer/Community Partner Contribution, by Hours Contributed</div>
 					<svg class="employer-bubble-chart"></svg>
 					<div class="chart-note">Hover over circles to see employer/community partner name, if not displayed</div>
 				</div>
@@ -287,7 +296,7 @@
 	<script src="build/lib.min.js"></script>
 		
 	<!-- Data (for local version only) --->
-	<!--<script src="data/data.js"></script>-->
+	<script src="data/data.js"></script>
     
     <!-- Project Specific Files -->
     <script src="js/pages/academy.js"></script>
