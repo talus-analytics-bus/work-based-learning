@@ -28,6 +28,7 @@ var App = App || {};
 			var lastName = employerInfo.contact_last;
 			var phone = employerInfo.contact_phone;
 			var email = employerInfo.contact_email;
+
 			$('.employer-first-name-text').text((firstName === '') ? 'No Data' : firstName);
 			$('.employer-last-name-text').text((lastName === '') ? 'No Data' : lastName);
 			$('.employer-phone-text').text((phone === '') ? 'No Data' : phone);

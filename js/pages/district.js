@@ -3,6 +3,7 @@ var App = App || {};
 (function() {
 	App.initDistrict = function(name) {
 		if (typeof name === 'undefined') var name = App.academies[0].school_district;
+
 		
 		// fill sector select
 		var districtSelect = d3.select('.district-select').on('change', function() {

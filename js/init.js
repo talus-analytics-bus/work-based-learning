@@ -1,7 +1,6 @@
 var App = App || {};
 
-(function() {
-	
+(function() {	
 	var init = function() {			
 		App.initialize();
 		Routing.precompileTemplates();	

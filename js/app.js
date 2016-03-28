@@ -79,7 +79,7 @@ var App = App || {};
 		
 		academyRows.exit().remove();
 	};
-	
+		
 	/**
 	 * Queries and returns data from the database
 	 * @param {String} tableName The name of the database table to be querying from
