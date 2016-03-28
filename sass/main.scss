@@ -1,0 +1,93 @@
+@import 'helpers/classes';
+@import 'helpers/mixins';
+@import 'components/charts';
+@import 'pages/academy';
+@import 'pages/district';
+@import 'pages/employer';
+@import 'pages/home';
+@import 'pages/login';
+@import 'pages/sector';
+
+body { font-family: 'Open Sans', sans-serif; }
+.container {
+  min-height: 90vh;
+  padding: 20px 30px 50px;
+  text-align: center;
+  background-color: white;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+.table {
+  display: inline-block;
+  width: auto;
+  text-align: left;
+  thead { font-weight: 600; }
+  td:first-child { cursor: pointer; }
+  td:nth-child(n+2) { text-align: right; }
+}
+select.form-control {
+  display: inline-block;
+  width: auto;
+}
+.select-label {
+  display: inline-block;
+  margin-right: 8px;
+}
+
+
+/* --- Charts --- */
+.legend {
+  display: none;
+  margin-top: 30px;
+}
+.legend text { text-anchor: start; }
+
+.chart-title {
+  font-size: 1.2em;
+  text-align: center;
+}
+.chart-note { font-style: italic; }
+rect { shape-rendering: crispEdges; }
+
+
+/* --- Nav Bar --- */
+.navbar { margin-bottom: 0px; }
+.header-wrapper {
+  position: relative;
+  padding: 20px;
+  text-align: center;
+}
+.header {
+  position: relative;
+  display: inline-block;
+}
+.header-title {
+  font-size: 2.5em;
+  font-weight: 300;
+  cursor: pointer;
+}
+.logo {
+  position: absolute;
+  top: -1px;
+  left: 20px;
+}
+.breadcrumbs-bar {
+  padding: 10px 40px;
+  font-size: 1.1em;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  @include gradient(#fafafa, #f6f6f6);
+}
+.bread-link {
+  display: inline-block;
+  font-weight: 600;
+  cursor: pointer;
+  color: #333;
+  &:hover { color: #000; }
+}
+
+
+/* --- List Page --- */
+.table-contents {
+  margin-top: 30px;
+}

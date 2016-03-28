@@ -1,0 +1,77 @@
+/* --- Home Page --- */
+.home-container {
+  margin-top: 5px;
+}
+
+.progress-bar-container {
+  padding-bottom: 30px;
+  border-bottom: 1px solid #ccc;
+}
+.progress-bar-shell {
+  position: relative;
+  display: inline-block;
+  margin-top: 15px;
+  margin-bottom: 25px;
+  padding: 15px 20px;
+  width: 800px;
+  text-align: center;
+  border: 2px solid #333;
+  background-color: white;
+  @include border-radius(7px);
+  
+  .progress-bar {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    z-index: 5;
+    @include border-left-radius(7px);
+    @include hori-gradient(#a1d99b, #006d2c);
+  }
+  .progress-text {
+    position: relative;
+    color: white;
+    z-index: 10;
+    font-size: 1.1em;
+    font-weight: 600;
+  }
+  .tick-line {
+    position: absolute;
+    top: 103%;
+    height: 8px;
+    width: 2px;
+    z-index: 2;
+    background-color: #999;
+  }
+  .tick-text {
+    position: absolute;
+    top: 119%;
+    width: 21%;
+    text-align: center;
+  }
+}
+
+.overall-chart-container {
+  padding-top: 30px;
+}
+
+.home-button-container {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid #ccc;
+}
+.big-button {
+  font-size: 1.1em;
+  padding: 8px 16px;
+  margin: 10px 10px 5px;
+  img {
+    width: 27px;
+    height: 27px;
+    margin-right: 10px;
+  }
+  div {
+    display: inline-block;
+    position: relative;
+    top: 2px;
+  }
+}

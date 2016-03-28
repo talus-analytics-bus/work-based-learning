@@ -1,0 +1,38 @@
+/* --- Chart Elements --- */
+.bar {
+  fill: steelblue;
+  &:hover { fill: brown; }
+}
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 3px;
+}
+.area {
+  fill: transparentize(steelblue, 0.5);
+}
+.point {
+  fill: steelblue;
+  cursor: pointer;
+}
+
+
+/* --- Axes and Ticks --- */
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #999;
+  shape-rendering: crispEdges;
+}
+.tick line {
+  fill: #999;
+  stroke: #999;
+  stroke-width: 1;
+  stroke-dasharray:3,3;
+}
+
+
+/* --- Text --- */
+text {
+  text-anchor: middle;
+}

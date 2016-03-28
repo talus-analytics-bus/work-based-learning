@@ -1,0 +1,46 @@
+.academy-select-container {
+  margin-bottom: 30px;
+  padding: 10px 0px 30px;
+  border-bottom: 1px solid #ccc;
+  text-align: left;  
+}
+
+.academy-name-text {
+  text-align: left;
+  font-size: 1.4em;
+}
+.academy-data-container {
+  text-align: left;
+  margin-top: 30px;
+  font-size: 1.1em;
+  & > div:nth-child(n+2) {
+    margin-top: 3px;
+  }
+}
+.academy-data-label {
+  display: inline-block;
+  width: 110px;
+  font-weight: 600;
+}
+.academy-sector-text,
+.academy-district-text {
+  color: #0645ad;
+  cursor: pointer;
+}
+.academy-distribution-container { margin-top: 30px; }
+.event-list-container {
+  display: none;
+  margin-top: 50px;
+}
+.academy-event-list.table {
+  margin-top: 10px;
+  td:nth-child(1) { text-align: left; }
+  td:nth-child(2) {
+    text-align: right;
+    padding-left: 25px;
+  }
+}
+.employer-bubble-chart {
+  margin-top: 15px;
+  border: 1px solid #ccc; 
+}

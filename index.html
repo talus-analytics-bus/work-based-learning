@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <title>Work-Based Learning</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="img/favicon.ico">
+    
+    <!-- ----- CSS Files ----- -->
+ 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:800,600,400,300' rel='stylesheet' type='text/css'>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+   	<link href='css/tooltipster.min.css' rel='stylesheet' type='text/css'>
+   	<link href='css/nprogress.min.css' rel='stylesheet' type='text/css'>
+   	<link href='css/main.css' rel='stylesheet' type='text/css'>
+   	<!--<link href="build/bundle.min.css" rel="stylesheet" type="text/css">-->
+</head>
+<body>
+    <div class="navbar navbar-default">
+    	<div class="header-wrapper">
+    		<div class="header">
+    			<div class="header-title">Work-Based Learning</div>
+    		</div>
+			<img class="logo" src="img/innovate-tk-logo.png" alt="Innovate TK" width="230" height="91">
+    	</div>
+    </div>
+    <div class="breadcrumbs-bar"></div>
+    <div id="page-content"></div>
+    
+    <!-- ----------- TEMPLATES ------------- -->
+    <script id="home-template" type="text/x-handlebars-template">
+		<div class="home-container container">
+			<div class="progress-bar-container">
+				<div class="chart-title">Work-Based Learning Contribution Target Match</div>
+				<div class="progress-bar-shell">
+					<div class="progress-bar"></div>
+					<div class="progress-text"></div>
+				</div>
+			</div>
+			<div class="overall-chart-container">
+				<div class="chart-title">Work-Based Learning Contribution Overview</div>
+				<svg class="overall-distribution-chart"></svg>						
+			</div>
+			<div class="home-button-container">
+				<div class="big-button btn btn-default" page="academy">
+					<img src="img/academy.png">
+					<div>View by Academy</div>
+				</div>
+				<div class="big-button btn btn-default" page="district">
+					<img src="img/community.png">
+					<div>View by District/Community</div>
+				</div>
+				<div class="big-button btn btn-default" page="employer">
+					<img src="img/employer.png">
+					<div>View by Employer/Community Partner</div>
+				</div>
+				<div class="big-button btn btn-default" page="sector">
+					<img src="img/sector.png">
+					<div>View by Sector</div>
+				</div>
+			</div>
+		</div>
+	</script>
+
+    <script id="academy-template" type="text/x-handlebars-template">
+    	<div class="container">
+    		<div class="academy-select-container">
+    			<div class="select-label">Select an academy:</div>
+    			<select class="academy-select form-control"></select>
+    		</div>
+			<div class="academy-name-text"></div>
+			<div class="academy-data-container">
+				<div>
+					<div class="academy-data-label">High School: </div>
+					<span class="academy-high-school-text"></span>
+				</div>
+				<div>
+					<div class="academy-data-label">District: </div>
+					<span class="academy-district-text"></span>
+				</div>
+				<div>
+					<div class="academy-data-label">County: </div>
+					<span class="academy-county-text"></span>
+				</div>
+				<div>
+					<div class="academy-data-label">Sector: </div>
+					<span class="academy-sector-text"></span>
+				</div>
+			</div>
+			<div class="academy-distribution-container chart-container">
+				<div class="chart-title">Donations by Type</div>
+				<svg class="academy-distribution-chart"></svg>
+			</div>
+			<div class="event-list-container row">
+				<div class="col-md-5">
+					<div class="chart-title">Employer/Community Partner Volunteer Work</div>
+					<div class="event-list-btn-group btn-group margin-top-20">
+						<div class="btn btn-default active" stat="hours">Hours</div>
+						<div class="btn btn-default" stat="money">Donations</div>
+					</div>
+					<div>
+						<table class="academy-event-list table table-condensed table-hover">
+							<thead>
+								<tr>
+									<td>Employer</td>
+									<td>Hours</td>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+				</div>
+				<div class="col-md-7">
+					<div class="chart-title">Employer/Community Partner Contribution, by Hours Contributed</div>
+					<svg class="employer-bubble-chart"></svg>
+					<div class="chart-note">Hover over circles to see employer/community partner name, if not displayed</div>
+				</div>
+			</div>
+		</div>
+	</script>	
+
+    <script id="district-template" type="text/x-handlebars-template">
+		<div class="container">
+			<div class="district-select-container">
+				<div class="select-label">Select a district:</div>
+				<select class="district-select form-control"></select>
+			</div>
+			<div class="district-name-text"></div>
+			<div class="district-data-container">
+				<div>
+					<div class="district-data-label">County: </div>
+					<span class="district-county-text"></span>
+				</div>
+				<div>
+					<div class="district-data-label">High School(s): </div>
+					<span class="district-high-school-text"></span>
+				</div>
+			</div>
+			<div class="district-distribution-container chart-container">
+				<div class="chart-title">Donations by Type, by High School</div>
+				<svg class="district-distribution-chart"></svg>
+				<svg class="legend"></svg>
+			</div>
+			<div class="event-list-container row">
+				<div class="col-md-5">
+					<div class="chart-title">Employer/Community Partner Volunteer Work</div>
+					<div class="event-list-btn-group btn-group margin-top-20">
+						<div class="btn btn-default active" stat="hours">Hours</div>
+						<div class="btn btn-default" stat="money">Donations</div>
+					</div>
+					<div>
+						<table class="academy-event-list table table-condensed table-hover">
+							<thead>
+								<tr>
+									<td>Employer</td>
+									<td>Hours</td>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+				</div>
+				<div class="col-md-7">
+					<div class="chart-title">Employer/Community Partner Contribution, by Hours Contributed</div>
+					<svg class="employer-bubble-chart"></svg>
+					<div class="chart-note">Hover over circles to see employer/community partner name, if not displayed</div>
+				</div>
+			</div>
+			<div class="empty-event-list-container">
+				<div>There were no employer events found for this district.</div>
+			</div>
+		</div>
+	</script>
+
+    <script id="sector-template" type="text/x-handlebars-template">
+		<div class="container">
+			<div class="sector-select-container">
+				<div class="select-label">Select a sector:</div>
+				<select class="sector-select form-control"></select>
+			</div>
+			<div class="sector-name-text"></div>
+			<div class="sector-distribution-container chart-container">
+				<div class="chart-title">Sector Donations by Type, by High School</div>
+				<svg class="sector-distribution-chart"></svg>
+				<svg class="legend"></svg>
+			</div>
+			<div class="event-list-container row">
+				<div class="col-md-5">
+					<div class="chart-title">Employer/Community Partner Volunteer Work</div>
+					<div class="event-list-btn-group btn-group margin-top-20">
+						<div class="btn btn-default active" stat="hours">Hours</div>
+						<div class="btn btn-default" stat="money">Donations</div>
+					</div>
+					<table class="academy-event-list table table-condensed table-hover">
+						<thead>
+							<tr>
+								<td>District</td>
+								<td>Donations</td>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+				<div class="col-md-7">
+					<div class="chart-title">Employer/Community Partner Contribution, by Hours Contributed</div>
+					<svg class="employer-bubble-chart"></svg>
+					<div class="chart-note">Hover over circles to see employer/community partner name, if not displayed</div>
+				</div>
+			</div>
+			<div class="academy-list-container row">
+				<div class="col-md-5">
+					<div class="chart-title">Donations by Academy</div>
+					<table class="sector-academy-list table table-condensed table-hover">
+						<thead>
+							<tr>
+								<td>Academy</td>
+								<td>Donations</td>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+				<div class="col-md-7">
+					<div class="chart-title">Academy Donations</div>
+					<svg class="academy-bubble-chart"></svg>
+					<div class="chart-note">Hover over circles to see the academy name, if not displayed</div>
+				</div>
+			</div>
+		</div>
+	</script>
+	
+    <script id="employer-template" type="text/x-handlebars-template">
+		<div class="container">
+			<div class="employer-select-container">
+				<div class="select-label">Select an employer/community partner:</div>
+				<select class="employer-select form-control"></select>
+			</div>
+			<div class="employer-name-text"></div>
+			<div class="employer-data-container">
+				<div>
+					<div class="employer-data-label">Contact First Name: </div>
+					<span class="employer-first-name-text"></span>
+				</div>
+				<div>
+					<div class="employer-data-label">Contact Last Name: </div>
+					<span class="employer-last-name-text"></span>
+				</div>
+				<div>
+					<div class="employer-data-label">Contact Phone Number: </div>
+					<span class="employer-phone-text"></span>
+				</div>
+				<div>
+					<div class="employer-data-label">Contact Email Address: </div>
+					<span class="employer-email-text"></span>
+				</div>
+			</div>
+			<div class="employer-distribution-container chart-container">
+				<div class="chart-title">Employer Volunteer Hours by Sector</div>
+				<svg class="employer-distribution-chart"></svg>
+			</div>    		
+    	</div>
+    </script>
+
+    <script id="list-template" type="text/x-handlebars-template">
+    	<div class="container">
+    		<div class="btn-group">
+    			<div class="btn btn-default active">Academy</div>
+    			<div class="btn btn-default">District/Community</div>
+    			<div class="btn btn-default">Employer/Community Partner</div>
+    			<div class="btn btn-default">Sector</div>
+    		</div>
+    		<div class="table-contents">
+	    		<table class="academy-table table table-condensed table-hover">
+	    			<thead>
+	    				<tr></tr>
+	    			</thead>
+	    			<tbody></tbody>
+	    		</table>
+	    	</div>
+    	</div>
+    </script>
+
+    <script id="login-template" type="text/x-handlebars-template">
+    	<div class="login-container container">
+    		<div class="login-box">
+	    		<div class="login-input-container">
+	    			<div class="login-input-label">Username</div>
+	    			<input class="username-input login-input form-control">
+	    		</div>
+	    		<div class="login-input-container">
+	    			<div class="login-input-label">Password</div>
+	    			<input type="password" class="password-input login-input form-control">
+	    		</div>
+	    		<div class="login-button btn btn-primary">Login</div>
+	    	</div>
+    	</div>
+    </script>
+
+	
+	<!-- General Libraries
+	<!--<script src="lib/jquery-2.2.0.min.js"></script>
+	<script src="lib/d3.min.js"></script>
+	
+	<!-- Routing Libraries
+    <script src="lib/signals.min.js"></script>
+    <script src="lib/crossroads.min.js"></script>
+    <script src="lib/hasher.min.js"></script>
+	<script src="lib/handlebars-v3.0.0.js"></script>
+	
+	<!-- Other Libraries
+	<script src="lib/queue.min.js"></script>
+	<script src="lib/jquery.tooltipster.min.js"></script>
+	<script src="lib/nprogress.min.js"></script>
+	<script src="lib/jquery.noty.packaged.min.js"></script>-->
+	
+	<script src="build/lib.min.js"></script>
+    
+    <!-- Project Specific Files -->
+    <script src="js/pages/academy.js"></script>
+    <script src="js/pages/district.js"></script>
+    <script src="js/pages/employer.js"></script>
+    <script src="js/pages/home.js"></script>
+    <script src="js/pages/login.js"></script>
+    <script src="js/pages/sector.js"></script>
+    <script src="js/utility.js"></script>
+    <script src="js/routing.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/init.js"></script>
+    <!--<script src="build/bundle.min.js"></script>-->
+</body>
+</html>
