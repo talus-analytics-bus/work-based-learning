@@ -52,21 +52,12 @@ var Routing = {};
 				hasher.setHash('login');
 				noty({type: 'warning', text: loginData.error});
 			} else {
-				if (typeof App.academies === 'undefined') {
-					App.loadData(function() {
-						actuallyLoadPage(pageName, pageFunction, data);
-					});
-				} else {
-					actuallyLoadPage(pageName, pageFunction, data);
-				}
+				setBreadcrumbs(pageName);
+				loadTemplate(pageName);
+				pageFunction(data);
+				window.scrollTo(0, 0);
 			}
 		});
-	};
-	var actuallyLoadPage = function(pageName, pageFunction, data) {
-		setBreadcrumbs(pageName);
-		loadTemplate(pageName);
-		pageFunction(data);
-		window.scrollTo(0, 0);
 	};
 	
 	var setBreadcrumbs = function(page) {

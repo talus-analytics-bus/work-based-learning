@@ -1,7 +1,16 @@
 var App = App || {};
 
 (function() {
-	App.spendingCategories = ['Total', 'Cash', 'Equipment', 'Scholarship', 'Stipend', 'Other', 'Paid Internships', 'Emp. Hours'];
+	App.spendingCategories = [
+		{attr: 'total', name: 'Total'},
+		{attr: 'cash', name: 'Cash'},
+		{attr: 'equipment', name: 'Equipment'},
+		{attr: 'scholarship', name: 'Scholarship'},
+		{attr: 'stipend', name: 'Stipend'},
+		{attr: 'other', name: 'Other'},
+		{attr: 'paid_internship', name: 'Paid Internships'},
+		{attr: 'emp_hours', name: 'Emp. Hours'}
+	];
 	App.payRate = 11.7;
 
 	App.initialize = function() {
@@ -10,6 +19,7 @@ var App = App || {};
 	};
 	
 	App.loadData = function(callback) {
+		NProgress.start();
 		queue()
 			.defer(App.getData, 'academies')
 			.defer(App.getData, 'districts')
@@ -23,7 +33,7 @@ var App = App || {};
 
 				// get unique list of sectors
 				var sectors = App.academies
-					.map(function(d) { return d['Primary CTE Industry Sector']; })
+					.map(function(d) { return d.primary_cte_industry; })
 					.filter(function(d) { return d !== '#N/A'; });
 				App.sectors = Util.getUnique(sectors).sort();
 				
@@ -44,6 +54,7 @@ var App = App || {};
 				Util.assignId(App.districts);
 				Util.assignId(App.employers);
 
+				NProgress.done();
 				callback();		
 			});
 	};
@@ -79,7 +90,47 @@ var App = App || {};
 		
 		academyRows.exit().remove();
 	};
+
+	
+	App.getEmployerData = function(a) {
+		var employerInfo = {};
+		var maxHours = 0;
+		for (var i = 0; i < App.events.length; i++) {
+			var event = App.events[i];
+			if (typeof a === 'object' && (event.academy_name + event.academy_school === a.academy_name + a.high_school) ||
+				(event.school_district === a)) {
+				var emp = event.employer;
+				if (typeof employerInfo[emp] === 'undefined') {
+					employerInfo[emp] = {
+						hours: 0,
+						money: 0
+					};
+				}
+				employerInfo[emp].hours += Util.strToFloat(event.total);
+				employerInfo[emp].money += Util.strToFloat(event.cash);
+				employerInfo[emp].money += Util.strToFloat(event.equipment);
+				employerInfo[emp].money += Util.strToFloat(event.scholarship);
+				employerInfo[emp].money += Util.strToFloat(event.stipend);
+				employerInfo[emp].money += Util.strToFloat(event.other);
+				employerInfo[emp].money += Util.strToFloat(event.internship_hours) * App.payRate;
+				// record max
+				if (employerInfo[emp].hours > maxHours) maxHours = employerInfo[emp].hours;
+			}
+		}
 		
+		var employers = [];
+		for (var emp in employerInfo) {
+			employers.push({
+				employer: emp,
+				hours: employerInfo[emp].hours,
+				money: employerInfo[emp].money,
+				value: employerInfo[emp].hours,
+				percOfMax: employerInfo[emp].hours / maxHours
+			});
+		}			
+		return employers;
+	};
+			
 	/**
 	 * Queries and returns data from the database
 	 * @param {String} tableName The name of the database table to be querying from

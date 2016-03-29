@@ -10,7 +10,7 @@ var App = App || {};
 			updateData(sector);
 			updateDistributionChart(sector);
 			updateEventTable(sector);
-			updateBubbleChart(sector);			
+			updateBubbleChart(sector);
 			updateAcademyEventTable(sector);
 			updateAcademyBubbleChart(sector);			
 		});
@@ -42,7 +42,7 @@ var App = App || {};
 
 
 		var x = d3.scale.ordinal()
-			.domain(App.spendingCategories)
+			.domain(App.spendingCategories.map(function(d) { return d.name; }))
 			.rangeRoundBands([0, width], 0.3);
 		var xAxis = d3.svg.axis().scale(x)
 			.orient('bottom');
@@ -71,9 +71,11 @@ var App = App || {};
 
 			var sectorData = [];
 			for (var i = 0; i < App.spendingCategories.length; i++) {
-				var cat = App.spendingCategories[i];
+				var cat = App.spendingCategories[i].attr;
+				var catName = App.spendingCategories[i].name;
 				var data = {
 					name: cat,
+					catName: catName,
 					values: [],
 					sum: 0
 				};
@@ -84,8 +86,9 @@ var App = App || {};
 						var val = Util.strToFloat(d[cat]);
 						if (!isNaN(val)) {
 							data.values.push({
-								academy: d['Academy Name'] + ' (' + d.high_school + ')',
+								academy: d.academy_name + ' (' + d.high_school + ')',
 								category: cat,
+								catName: catName,
 								value: val,
 								y0: data.sum,
 								y1: data.sum += val
@@ -97,7 +100,7 @@ var App = App || {};
 			}
 			
 			// fix y-axis scale
-			y.domain([0, d3.max(sectorData.map(function(d) { return d.sum; }))]);
+			y.domain([0, 1.1*d3.max(sectorData.map(function(d) { return d.sum; }))]);
 			yAxis.scale(y);
 			yAxisG.call(yAxis);
 
@@ -111,7 +114,7 @@ var App = App || {};
 				.attr('x', x.rangeBand() / 2);
 			
 			barGroups.transition()
-				.attr('transform', function(d) { return 'translate(' + x(d.name) + ',0)'; });
+				.attr('transform', function(d) { return 'translate(' + x(d.catName) + ',0)'; });
 			barGroups.exit().remove();
 			
 			// update actual bars
@@ -136,7 +139,7 @@ var App = App || {};
 				.each('end', function(d) {
 					var htmlStr = '';
 					htmlStr += '<div class="sector-tooltip-academy">' + d.academy + '</div>';
-					htmlStr += '<div class="sector-tooltip-value">' + d.category + ': <b>' + Util.monetize(d.value) + '</b></div>';
+					htmlStr += '<div class="sector-tooltip-value">' + d.catName + ': <b>' + Util.monetize(d.value) + '</b></div>';
 					$(this).tooltipster('content', htmlStr);
 				});
 			bars.exit().remove();
@@ -320,7 +323,7 @@ var App = App || {};
 				.attr('r', function(d) { return d.r; })
 				.style('fill', function(d) { return aColorScale(d.employer); });
 			nodes.on('click', function(d) {
-				var academyId = App.academies.filter(function(dd) { return dd['Academy Name'] === d.employer; })[0].id;
+				var academyId = App.academies.filter(function(dd) { return dd.academy_name === d.employer; })[0].id;
 				hasher.setHash('academy/' + academyId);
 			});
 			nodes.each(function(d) {
@@ -341,8 +344,8 @@ var App = App || {};
 		var maxHours = 0;
 		for (var i = 0; i < App.events.length; i++) {
 			var event = App.events[i];
-			if (event.Sector === a) {
-				var emp = event['Employer'];
+			if (event.sector === a) {
+				var emp = event.employer;
 				if (emp !== '') {
 					if (typeof employerInfo[emp] === 'undefined') {
 						employerInfo[emp] = {
@@ -350,13 +353,13 @@ var App = App || {};
 							money: 0
 						};
 					}
-					employerInfo[emp].hours += Util.strToFloat(event.Total);
-					employerInfo[emp].money += Util.strToFloat(event.Cash);
-					employerInfo[emp].money += Util.strToFloat(event.Equipment);
-					employerInfo[emp].money += Util.strToFloat(event.Scholarship);
-					employerInfo[emp].money += Util.strToFloat(event.Stipend);
-					employerInfo[emp].money += Util.strToFloat(event.Other);
-					employerInfo[emp].money += Util.strToFloat(event['If Paid Internship, Number of Internship Hours']) * App.payRate;
+					employerInfo[emp].hours += Util.strToFloat(event.total);
+					employerInfo[emp].money += Util.strToFloat(event.cash);
+					employerInfo[emp].money += Util.strToFloat(event.equipment);
+					employerInfo[emp].money += Util.strToFloat(event.scholarship);
+					employerInfo[emp].money += Util.strToFloat(event.stipend);
+					employerInfo[emp].money += Util.strToFloat(event.other);
+					employerInfo[emp].money += Util.strToFloat(event.internship_hours) * App.payRate;
 					// record max
 					if (employerInfo[emp].hours > maxHours) maxHours = employerInfo[emp].hours;
 				}
@@ -381,9 +384,9 @@ var App = App || {};
 		var employerHours = {};
 		var maxHours = 0;
 		for (var i = 0; i < events.length; i++) {
-			var emp = events[i]['Academy Name'];
+			var emp = events[i].academy_name;
 			if (typeof employerHours[emp] === 'undefined') employerHours[emp] = 0;
-			employerHours[emp] += Util.strToFloat(events[i].Total);
+			employerHours[emp] += Util.strToFloat(events[i].total);
 			
 			// record max
 			if (employerHours[emp] > maxHours) maxHours = employerHours[emp];

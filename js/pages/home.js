@@ -19,7 +19,7 @@ var App = App || {};
    				.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 		var x = d3.scale.ordinal()
-			.domain(App.spendingCategories)
+			.domain(App.spendingCategories.map(function(d) { return d.name }))
 			.rangeRoundBands([0, width], 0.3);
 		var xAxis = d3.svg.axis().scale(x)
 			.orient('bottom');
@@ -57,7 +57,7 @@ var App = App || {};
 			.attr('x', x.rangeBand() / 2);
 		
 		barGroups.transition()
-			.attr('transform', function(d) { return 'translate(' + x(d) + ',0)'; });
+			.attr('transform', function(d) { return 'translate(' + x(d.name) + ',0)'; });
 		barGroups.select('rect').transition()
 			.attr('y', function(d, i) { return y(values[i]); })
 			.attr('height', function(d, i) { return height - y(values[i]); });

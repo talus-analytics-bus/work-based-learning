@@ -16,16 +16,16 @@ var App = App || {};
 		employerSelect.selectAll('option')
 			.data(App.employers.sort())
 			.enter().append('option')
-				.property('value', function(d) { return d.Employer; })
-				.text(function(d) { return d.Employer; });
+				.property('value', function(d) { return d.employer; })
+				.text(function(d) { return d.employer; });
 		employerSelect.property('value', name);
 		
 		var updateData = function(emp) {
 			$('.employer-name-text').text(emp);
 			
-			var employerInfo = App.employers.filter(function(d) { return d.Employer === emp; })[0];
-			var firstName = employerInfo.contact_first;
-			var lastName = employerInfo.contact_last;
+			var employerInfo = App.employers.filter(function(d) { return d.employer === emp; })[0];
+			var firstName = employerInfo.contact_first_name;
+			var lastName = employerInfo.contact_last_name;
 			var phone = employerInfo.contact_phone;
 			var email = employerInfo.contact_email;
 
@@ -81,11 +81,11 @@ var App = App || {};
 			for (var i = 0; i < sectors.length; i++) valuesBySector[sectors[i]] = 0;
 			for (var i = 0; i < App.events.length; i++) {
 				var event = App.events[i];
-				if (event.Employer === emp) {
-					var sector = event.Sector;
-					var val = Util.strToFloat(event.Total);
+				if (event.employer === emp) {
+					var sector = event.sector;
+					var val = Util.strToFloat(event.total);
 					if (sectors.indexOf(sector) === -1) {
-						if (!isNaN(val)) valuesBySector.Other += val;
+						if (!isNaN(val)) valuesBySector.other += val;
 					} else {
 						if (!isNaN(val)) valuesBySector[sector] += val;
 					}
@@ -96,8 +96,8 @@ var App = App || {};
 			// fix y-axis scale
 			var values = sectors.map(function(d) { return valuesBySector[d]; });
 			var max = d3.max(values);
-			if (max === 0) max = 10;
-			y.domain([0, max]);
+			if (max === 0) max = 10/11;
+			y.domain([0, 1.1*max]);
 			yAxis.scale(y);
 			yAxisG.call(yAxis);
 

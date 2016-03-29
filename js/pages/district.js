@@ -28,7 +28,7 @@ var App = App || {};
 			$('.district-name-text').html(district);
 			
 			var academies = App.academies.filter(function(d) { return d.school_district === district; });
-			var county = academies[0].County;
+			var county = academies[0].county;
 			$('.district-county-text').html(county);
 			
 			var highSchools = Util.getUnique(academies.map(function(d) { return d.high_school; }));
@@ -48,7 +48,7 @@ var App = App || {};
 
 
 		var x = d3.scale.ordinal()
-			.domain(App.spendingCategories)
+			.domain(App.spendingCategories.map(function(d) { return d.name; }))
 			.rangeRoundBands([0, width], 0.3);
 		var xAxis = d3.svg.axis().scale(x)
 			.orient('bottom');
@@ -76,9 +76,11 @@ var App = App || {};
 
 			var districtData = [];
 			for (var i = 0; i < App.spendingCategories.length; i++) {
-				var cat = App.spendingCategories[i];
+				var cat = App.spendingCategories[i].attr;
+				var catName = App.spendingCategories[i].name;
 				var data = {
 					name: cat,
+					catName: catName,
 					values: [],
 					sum: 0
 				};
@@ -91,6 +93,7 @@ var App = App || {};
 							data.values.push({
 								academy: d.academy_name + ' (' + d.high_school + ')',
 								category: cat,
+								catName: catName,
 								value: val,
 								y0: data.sum,
 								y1: data.sum += val
@@ -102,7 +105,7 @@ var App = App || {};
 			}
 			
 			// fix y-axis scale
-			y.domain([0, d3.max(districtData.map(function(d) { return d.sum; }))]);
+			y.domain([0, 1.1*d3.max(districtData.map(function(d) { return d.sum; }))]);
 			yAxis.scale(y);
 			yAxisG.call(yAxis);
 
@@ -116,7 +119,7 @@ var App = App || {};
 				.attr('x', x.rangeBand() / 2);
 			
 			barGroups.transition()
-				.attr('transform', function(d) { return 'translate(' + x(d.name) + ',0)'; });
+				.attr('transform', function(d) { return 'translate(' + x(d.catName) + ',0)'; });
 			barGroups.exit().remove();
 			
 			// update actual bars
@@ -141,7 +144,7 @@ var App = App || {};
 				.each('end', function(d) {
 					var htmlStr = '';
 					htmlStr += '<div class="sector-tooltip-academy">' + d.academy + '</div>';
-					htmlStr += '<div class="sector-tooltip-value">' + d.category + ': <b>' + Util.monetize(d.value) + '</b></div>';
+					htmlStr += '<div class="sector-tooltip-value">' + d.catName + ': <b>' + Util.monetize(d.value) + '</b></div>';
 					$(this).tooltipster('content', htmlStr);
 				});
 			bars.exit().remove();
@@ -184,7 +187,7 @@ var App = App || {};
 			
 			$('.academy-event-list thead td:nth-child(2)').text((stat === 'hours') ? 'Hours' : 'Donations');
 			
-			var employers = getEmployerData(a);	
+			var employers = App.getEmployerData(a);	
 
 			if (employers.length === 0) {
 				$('.event-list-container').hide();
@@ -240,7 +243,7 @@ var App = App || {};
 				.attr('transform', 'translate(' + bubbleChartMargin.left + ',' + bubbleChartMargin.top + ')');
 		
 		var updateBubbleChart = function(a) {
-			var employers = getEmployerData(a);
+			var employers = App.getEmployerData(a);
 			if (employers.length > 0) {
 				var nodes = bubbleChart.selectAll('.node')
 					.data(bubble.nodes({children: employers}));
@@ -274,43 +277,5 @@ var App = App || {};
 		};
 		updateEventTable(name);
 		updateBubbleChart(name);
-	};
-	
-	var getEmployerData = function(a) {
-		var employerInfo = {};
-		var maxHours = 0;
-		for (var i = 0; i < App.events.length; i++) {
-			var event = App.events[i];
-			if (event.school_district === a) {
-				var emp = event.Employer;
-				if (typeof employerInfo[emp] === 'undefined') {
-					employerInfo[emp] = {
-						hours: 0,
-						money: 0
-					};
-				}
-				employerInfo[emp].hours += Util.strToFloat(event.total);
-				employerInfo[emp].money += Util.strToFloat(event.cash);
-				employerInfo[emp].money += Util.strToFloat(event.equipment);
-				employerInfo[emp].money += Util.strToFloat(event.scholarship);
-				employerInfo[emp].money += Util.strToFloat(event.stipend);
-				employerInfo[emp].money += Util.strToFloat(event.other);
-				employerInfo[emp].money += Util.strToFloat(event.internship_hours) * App.payRate;
-				// record max
-				if (employerInfo[emp].hours > maxHours) maxHours = employerInfo[emp].hours;
-			}
-		}
-		
-		var employers = [];
-		for (var emp in employerInfo) {
-			employers.push({
-				employer: emp,
-				hours: employerInfo[emp].hours,
-				money: employerInfo[emp].money,
-				value: employerInfo[emp].hours,
-				percOfMax: employerInfo[emp].hours / maxHours
-			});
-		}			
-		return employers;
 	};
 })();
