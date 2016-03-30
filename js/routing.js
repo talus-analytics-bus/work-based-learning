@@ -52,10 +52,12 @@ var Routing = {};
 				hasher.setHash('login');
 				noty({type: 'warning', text: loginData.error});
 			} else {
-				setBreadcrumbs(pageName);
-				loadTemplate(pageName);
-				pageFunction(data);
-				window.scrollTo(0, 0);
+				App.loadData(function() {
+					setBreadcrumbs(pageName);
+					loadTemplate(pageName);
+					pageFunction(data);
+					window.scrollTo(0, 0);
+				});
 			}
 		});
 	};

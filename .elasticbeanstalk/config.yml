@@ -1,0 +1,11 @@
+branch-defaults:
+  master:
+    environment: work-based-learning-dev
+    group_suffix: null
+global:
+  application_name: work-based-learning
+  default_ec2_keyname: aws-eb
+  default_platform: PHP 5.6
+  default_region: us-west-1
+  profile: null
+  sc: git

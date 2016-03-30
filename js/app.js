@@ -19,44 +19,48 @@ var App = App || {};
 	};
 	
 	App.loadData = function(callback) {
-		NProgress.start();
-		queue()
-			.defer(App.getData, 'academies')
-			.defer(App.getData, 'districts')
-			.defer(App.getData, 'employers')
-			.defer(App.getData, 'events')
-			.await(function(error, academies, districts, employers, events) {
-				App.academies = academies;
-				App.districts = districts;
-				App.employers = employers;
-				App.events = events;
-
-				// get unique list of sectors
-				var sectors = App.academies
-					.map(function(d) { return d.primary_cte_industry; })
-					.filter(function(d) { return d !== '#N/A'; });
-				App.sectors = Util.getUnique(sectors).sort();
-				
-				// fill in number of hours for each employer
-				for (var i = 0; i < App.employers.length; i++) {
-					var emp = App.employers[i].Employer;
-					App.employers[i].events = [];
-					for (var j = 0; j < App.events.length; j++) {
-						if (App.events[j].Employer === emp) {
-							App.employers[i].events.push(App.events[j]);
+		if (typeof App.academies === 'undefined') {
+			NProgress.start();
+			queue()
+				.defer(App.getData, 'academies')
+				.defer(App.getData, 'districts')
+				.defer(App.getData, 'employers')
+				.defer(App.getData, 'events')
+				.await(function(error, academies, districts, employers, events) {
+					App.academies = academies;
+					App.districts = districts;
+					App.employers = employers;
+					App.events = events;
+	
+					// get unique list of sectors
+					var sectors = App.academies
+						.map(function(d) { return d.primary_cte_industry; })
+						.filter(function(d) { return d !== '#N/A'; });
+					App.sectors = Util.getUnique(sectors).sort();
+					
+					// fill in number of hours for each employer
+					for (var i = 0; i < App.employers.length; i++) {
+						var emp = App.employers[i].Employer;
+						App.employers[i].events = [];
+						for (var j = 0; j < App.events.length; j++) {
+							if (App.events[j].Employer === emp) {
+								App.employers[i].events.push(App.events[j]);
+							}
 						}
 					}
-				}
-				
-				// assign ids
-				Util.assignId(App.academies);
-				Util.assignId(App.events);
-				Util.assignId(App.districts);
-				Util.assignId(App.employers);
-
-				NProgress.done();
-				callback();		
-			});
+					
+					// assign ids
+					Util.assignId(App.academies);
+					Util.assignId(App.events);
+					Util.assignId(App.districts);
+					Util.assignId(App.employers);
+	
+					NProgress.done();
+					callback();		
+				});
+		} else {
+			callback();
+		}
 	};
 	
 		
@@ -154,5 +158,11 @@ var App = App || {};
 				callback(null, results);
 			}
 		});
+	};
+	
+	
+	// logs the user out of the current PHP session (user must log in again to continue)
+	App.logout = function() {
+		$.get('php/logout.php');
 	};
 })();
